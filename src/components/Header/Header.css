@@ -1,0 +1,38 @@
+.header {
+  max-width: 1360px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 32px 40px;
+  font-family: "Cabinet-Grotesk";
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: bold;
+}
+
+.header__date {
+  margin: 0 16px;
+}
+
+.header__button {
+  background-color: transparent;
+  border: none;
+  font-family: "Cabinet-Grotesk";
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: bold;
+  margin: 0 8px 0 auto;
+}
+
+.header__button:hover {
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.header__username {
+  margin: 0 12px;
+}
+
+.logo {
+  margin: 0;
+}
