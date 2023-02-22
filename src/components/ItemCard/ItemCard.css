@@ -1,0 +1,28 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 328px;
+  height: 328px;
+  background-color: rgba(233, 233, 233, 1);
+  background-position: center;
+  background-size: 226px;
+  background-repeat: no-repeat;
+  border: 1px solid red;
+  border-radius: 19px;
+  margin: 10px;
+}
+
+.card:hover {
+  cursor: pointer;
+}
+
+.card__name {
+  border: 1px solid black;
+  background-color: white;
+  padding: 2px 12px;
+}
+
+.card__image {
+  max-width: 226px;
+}

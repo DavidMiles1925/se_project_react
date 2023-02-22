@@ -1,8 +1,6 @@
-import logo from "../../images/logo.svg";
-import avatar from "../../images/Avatar.png";
 import "./Header.css";
 
-function Header() {
+const Header = ({ weatherData, onClick }) => {
   const currentDate = new Date().toLocaleString("default", {
     month: "long",
     day: "numeric",
@@ -10,13 +8,17 @@ function Header() {
 
   return (
     <div className='header'>
-      <img className='logo' src={logo} alt='logo' />
-      <p className='header__date'>{currentDate}</p>
-      <button className='header__button'>+ Add Clothes</button>
+      <img className='logo' src='/images/logo.svg' alt='logo' />
+      <p className='header__date'>
+        {currentDate}, {weatherData.city}
+      </p>
+      <button className='header__button' onClick={onClick}>
+        + Add Clothes
+      </button>
       <p className='header__username'>David Miles</p>
-      <img className='header__avatar' src={avatar} alt='avatar' />
+      <img className='header__avatar' src='/images/avatar.png' alt='avatar' />
     </div>
   );
-}
+};
 
 export default Header;

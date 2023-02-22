@@ -4,8 +4,9 @@
   align-items: center;
   max-width: 1360px;
   max-height: 80px;
-  margin: 0 40px;
-  background-color: rgba(0, 163, 255, 1);
+
+  background-repeat: no-repeat;
+  background-position: right;
   border-radius: 12px;
 }
 
