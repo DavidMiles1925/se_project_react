@@ -15,7 +15,6 @@ function filterWeatherData(data) {
   if (!data) {
     return null;
   } else {
-    console.log(data);
     const weather = {};
     weather.city = data.name;
     weather.temp = data.main.temp;

@@ -15,7 +15,6 @@ function WeatherCard({ weatherData, deg, unit }) {
   weatherImages.forEach((item) => {
     if (item.isDay === isDay && item.condition === weatherData.condition) {
       backImage = item.image;
-      console.log("backImage: ", backImage);
     }
   });
 
