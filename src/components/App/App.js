@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import "../../fonts/fonts.css";
 import Header from "../Header/Header";
@@ -10,10 +10,10 @@ import { apiKey, lat, long, defaultClothingItems } from "../../utils/constants";
 import ItemModal from "../ItemModal/ItemModal";
 
 const App = () => {
-  const [weatherData, setWeatherData] = React.useState({});
-  const [clothingItems, setClothingItems] = React.useState([]);
-  const [activeModal, setActiveModal] = React.useState();
-  const [selectedCard, setSelectedCard] = React.useState(null);
+  const [weatherData, setWeatherData] = useState({});
+  const [clothingItems, setClothingItems] = useState(defaultClothingItems);
+  const [activeModal, setActiveModal] = useState();
+  const [selectedCard, setSelectedCard] = useState(null);
 
   function handleAddClothes() {
     setActiveModal("create");
@@ -24,13 +24,7 @@ const App = () => {
     setActiveModal("preview");
   }
 
-  function handleEscClose(evt) {
-    if (evt.key === "Escape") {
-      setActiveModal();
-    }
-  }
-
-  function closeAllModals(evt) {
+  function closeActiveModal(evt) {
     if (
       evt.target.classList.contains("modal") ||
       evt.target.classList.contains("modal__close")
@@ -39,7 +33,7 @@ const App = () => {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (lat && long) {
       getWeatherData(lat, long, apiKey)
         .then((data) => {
@@ -49,12 +43,16 @@ const App = () => {
     }
   }, []);
 
-  React.useEffect(() => {
-    setClothingItems(defaultClothingItems);
-  }, []);
-
-  React.useEffect(() => {
+  useEffect(() => {
+    const handleEscClose = (evt) => {
+      if (evt.key === "Escape") {
+        setActiveModal();
+      }
+    };
     document.addEventListener("keydown", handleEscClose);
+    return () => {
+      document.removeEventListener("keydown", handleEscClose);
+    };
   }, []);
 
   return (
@@ -71,7 +69,7 @@ const App = () => {
           title='New Garment'
           name='new-card'
           buttonText='Add Garment'
-          onClose={closeAllModals}
+          onClose={closeActiveModal}
         >
           <label className='modal__label'>Name</label>
           <input
@@ -130,7 +128,7 @@ const App = () => {
         </ModalWithForm>
       )}
       {activeModal === "preview" && (
-        <ItemModal card={selectedCard} onClose={closeAllModals} />
+        <ItemModal card={selectedCard} onClose={closeActiveModal} />
       )}
     </div>
   );
