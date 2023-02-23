@@ -31,7 +31,6 @@ const App = () => {
   }
 
   function closeAllModals(evt) {
-    evt.stopPropagation();
     if (
       evt.target.classList.contains("modal") ||
       evt.target.classList.contains("modal__close")
