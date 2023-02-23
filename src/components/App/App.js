@@ -16,7 +16,6 @@ const App = () => {
   const [selectedCard, setSelectedCard] = React.useState(null);
 
   function handleAddClothes() {
-    console.log("clothes added");
     setActiveModal("create");
   }
 
