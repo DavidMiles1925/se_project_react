@@ -1,5 +1,3 @@
-import NightClear from "../images/weathercard/Night_Clear.png";
-
 const apiKey = "5b8e4d2ac9c14802d1aabae0e2efab26";
 const lat = "38.857880915973226";
 const long = "-94.78542942574806";
@@ -36,7 +34,7 @@ const weatherImages = [
     condition: "Fog",
   },
   {
-    image: { NightClear },
+    image: "../../images/weathercard/Night_Clear.png",
     isDay: false,
     condition: "Clear",
   },
