@@ -1,12 +1,13 @@
 import "./ItemCard.css";
 
-function ItemCard({ key, card, onCardClick }) {
+function ItemCard({ card, onCardClick }) {
   return (
     <li
-      key={key}
       className='card'
       style={{ backgroundImage: `url(${card.link})` }}
-      onClick={onCardClick}
+      onClick={() => {
+        onCardClick(card);
+      }}
     >
       <p className='card__name'>{card.name}</p>
     </li>

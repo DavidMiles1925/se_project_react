@@ -26,3 +26,10 @@
 .card__image {
   max-width: 226px;
 }
+
+@media screen and (max-width: 450px) {
+  .card {
+    width: 280px;
+    height: 280px;
+  }
+}

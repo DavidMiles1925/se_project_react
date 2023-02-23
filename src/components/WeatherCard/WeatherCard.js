@@ -1,7 +1,7 @@
 import "./WeatherCard.css";
 import { weatherImages } from "../../utils/constants";
 
-function WeatherCard({ weatherData, deg }) {
+function WeatherCard({ weatherData, deg, unit }) {
   const isDay =
     Date.now() / 1000 > weatherData.sunrise &&
     Date.now() / 1000 < weatherData.sunset
@@ -25,7 +25,9 @@ function WeatherCard({ weatherData, deg }) {
         backgroundImage: `url(${backImage})`,
       }}
     >
-      <p className='weather__temp'>{deg}° F</p>
+      <p className='weather__temp'>
+        {deg}°{unit}
+      </p>
       <p></p>
     </div>
   );

@@ -7,7 +7,7 @@ const Header = ({ weatherData, onClick }) => {
   });
 
   return (
-    <div className='header'>
+    <header className='header'>
       <img className='logo' src='/images/logo.svg' alt='logo' />
       <p className='header__date'>
         {currentDate}, {weatherData.city}
@@ -17,7 +17,7 @@ const Header = ({ weatherData, onClick }) => {
       </button>
       <p className='header__username'>David Miles</p>
       <img className='header__avatar' src='/images/avatar.png' alt='avatar' />
-    </div>
+    </header>
   );
 };
 

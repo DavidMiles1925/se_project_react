@@ -4,7 +4,6 @@
   align-items: center;
   max-width: 1360px;
   max-height: 80px;
-
   background-repeat: no-repeat;
   background-position: right;
   border-radius: 12px;
@@ -12,11 +11,19 @@
 
 .weather__temp {
   color: white;
-  margin: 20px 16px;
+  margin-left: 16px;
   font-size: 36px;
   line-height: 40px;
 }
 
 .weather__image {
   height: 80px;
+}
+
+@media screen and (max-width: 500px) {
+  .weather__temp {
+    color: white;
+    font-size: 24px;
+    line-height: 28px;
+  }
 }

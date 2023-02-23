@@ -1,7 +1,6 @@
 .main {
   align-items: center;
   max-width: 1360px;
-  max-height: 80px;
   margin: 0 40px;
   background-color: white;
   font-family: "Cabinet-Grotesk";
@@ -10,7 +9,30 @@
   font-weight: normal;
 }
 
+.main__description-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
 .main__items {
   padding: 0;
-  display: flex;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 328px);
+  grid-template-rows: auto;
+  column-gap: 17px;
+  row-gap: 20px;
+}
+
+@media screen and (max-width: 1200px) {
+  .main__items {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .main__items {
+    grid-template-columns: repeat(auto-fill, 300px);
+  }
 }
