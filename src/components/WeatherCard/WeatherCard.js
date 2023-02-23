@@ -9,13 +9,15 @@ function WeatherCard({ weatherData, deg, unit }) {
     Date.now() / MILLISECONDS_TO_SECONDS < weatherData.sunset;
 
   const backColor = isDay ? "rgba(0, 163, 255, 1)" : "rgba(40, 104, 151, 1)";
-  const backImage = weatherImages.find((item) => {
+  const backImageObject = weatherImages.find((item) => {
     return (
       (weatherImages.isDay === isDay &&
         item.condition === weatherData.condition) ||
       imageError
     );
   });
+  const backImage = backImageObject.image;
+  console.log(backImage);
 
   return (
     <div
