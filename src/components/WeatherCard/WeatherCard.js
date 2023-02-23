@@ -12,7 +12,7 @@ function WeatherCard({ weatherData, deg, unit }) {
   const backImage = weatherImages.find((item) => {
     return (
       (weatherImages.isDay === isDay &&
-        weatherImages.condition === weatherData.condition) ||
+        item.condition === weatherData.condition) ||
       imageError
     );
   });
