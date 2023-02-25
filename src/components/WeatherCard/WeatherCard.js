@@ -1,23 +1,27 @@
+import React, { useEffect, useState } from "react";
 import "./WeatherCard.css";
 import { weatherImages } from "../../utils/constants";
 import imageError from "../../images/question.png";
 
 function WeatherCard({ weatherData, deg, unit }) {
-  const MILLISECONDS_TO_SECONDS = 1000;
-  const isDay =
-    Date.now() / MILLISECONDS_TO_SECONDS > weatherData.sunrise &&
-    Date.now() / MILLISECONDS_TO_SECONDS < weatherData.sunset;
+  const [backImage, setBackImage] = useState(imageError);
 
-  const backColor = isDay ? "rgba(0, 163, 255, 1)" : "rgba(40, 104, 151, 1)";
+  const backColor = weatherData.isDay
+    ? "rgba(0, 163, 255, 1)"
+    : "rgba(40, 104, 151, 1)";
+
   const backImageObject = weatherImages.find((item) => {
     return (
-      (weatherImages.isDay === isDay &&
-        item.condition === weatherData.condition) ||
-      imageError
+      item.condition === weatherData.condition &&
+      item.isDay === weatherData.isDay
     );
   });
-  const backImage = backImageObject.image;
-  console.log(backImage);
+
+  useEffect(() => {
+    if (backImageObject !== undefined) {
+      setBackImage(backImageObject.image);
+    }
+  }, [backImageObject]);
 
   return (
     <div
