@@ -20,14 +20,14 @@ function WeatherCard({ weatherData, deg, unit }) {
         );
       })
     );
-  }, []);
+  }, [weatherData.condition, weatherData.isDay]);
 
   useEffect(() => {
     if (backImageObject !== undefined) {
       setBackImage(backImageObject.image);
-      console.log("backImageObject: ");
+      console.log("backImageObject: ", backImageObject);
     }
-  }, []);
+  }, [backImageObject]);
 
   return (
     <div
