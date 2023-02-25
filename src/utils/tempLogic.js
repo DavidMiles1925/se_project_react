@@ -10,17 +10,13 @@ function convertTemp(kelvinTemp, desiredUnit) {
   }
 }
 
-function weatherTemp(deg, unit) {
-  if (unit === "F") {
-    if (deg >= 86) {
-      return "hot";
-    } else if (deg >= 60 && deg < 86) {
-      return "warm";
-    } else {
-      return "cold";
-    }
+function weatherTemp(kelvin) {
+  if (kelvin >= 303) {
+    return "hot";
+  } else if (kelvin >= 289 && kelvin < 303) {
+    return "warm";
   } else {
-    return "Error: Invalid weather type";
+    return "cold";
   }
 }
 

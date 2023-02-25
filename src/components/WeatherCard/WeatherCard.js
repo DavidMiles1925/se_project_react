@@ -25,6 +25,7 @@ function WeatherCard({ weatherData, deg, unit }) {
   useEffect(() => {
     if (backImageObject !== undefined) {
       setBackImage(backImageObject.image);
+      console.log("backImageObject: ");
     }
   }, []);
 

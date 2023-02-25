@@ -6,8 +6,7 @@ import "./Main.css";
 function Main({ weatherData, cards, onCardClick }) {
   const unit = "F";
   const deg = convertTemp(weatherData.temp, unit);
-
-  const weatherType = weatherTemp(deg, unit);
+  const weatherType = weatherTemp(weatherData.temp);
 
   return (
     <main className='main'>
