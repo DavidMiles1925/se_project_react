@@ -4,24 +4,29 @@ import { weatherImages } from "../../utils/constants";
 import imageError from "../../images/question.png";
 
 function WeatherCard({ weatherData, deg, unit }) {
+  console.log(weatherData.condition);
   const [backImage, setBackImage] = useState(imageError);
+  const [backColor, setBackColor] = useState(
+    weatherData.isDay ? "rgba(0, 163, 255, 1)" : "rgba(40, 104, 151, 1)"
+  );
+  const [backImageObject, setBackImageObject] = useState({});
 
-  const backColor = weatherData.isDay
-    ? "rgba(0, 163, 255, 1)"
-    : "rgba(40, 104, 151, 1)";
-
-  const backImageObject = weatherImages.find((item) => {
-    return (
-      item.condition === weatherData.condition &&
-      item.isDay === weatherData.isDay
+  useEffect(() => {
+    setBackImageObject(
+      weatherImages.find((item) => {
+        return (
+          item.condition === weatherData.condition &&
+          item.isDay === weatherData.isDay
+        );
+      })
     );
-  });
+  }, []);
 
   useEffect(() => {
     if (backImageObject !== undefined) {
       setBackImage(backImageObject.image);
     }
-  }, [backImageObject]);
+  }, []);
 
   return (
     <div

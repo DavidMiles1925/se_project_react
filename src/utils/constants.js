@@ -34,6 +34,11 @@ const weatherImages = [
     condition: "Fog",
   },
   {
+    image: "./images/weathercard/Day_Fog.png",
+    isDay: true,
+    condition: "Mist",
+  },
+  {
     image: "./images/weathercard/Night_Clear.png",
     isDay: false,
     condition: "Clear",
@@ -62,6 +67,11 @@ const weatherImages = [
     image: "./images/weathercard/Night_Fog.png",
     isDay: false,
     condition: "Fog",
+  },
+  {
+    image: "./images/weathercard/Night_Fog.png",
+    isDay: false,
+    condition: "Mist",
   },
 ];
 
