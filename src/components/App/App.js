@@ -1,19 +1,27 @@
 import React, { useState, useEffect } from "react";
+import { TemperatureContext } from "../../contexts/TemperatureContext";
 import "./App.css";
 import "../../fonts/fonts.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import ItemModal from "../ItemModal/ItemModal";
 import { getWeatherData, filterWeatherData } from "../../utils/weatherAPI";
 import { apiKey, lat, long, defaultClothingItems } from "../../utils/constants";
-import ItemModal from "../ItemModal/ItemModal";
 
 const App = () => {
   const [weatherData, setWeatherData] = useState({});
   const [clothingItems, setClothingItems] = useState(defaultClothingItems);
   const [activeModal, setActiveModal] = useState();
   const [selectedCard, setSelectedCard] = useState(null);
+  const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
+
+  function handleToggleSwitchChange() {
+    currentTemperatureUnit === "F"
+      ? setCurrentTemperatureUnit("C")
+      : setCurrentTemperatureUnit("F");
+  }
 
   function handleAddClothes() {
     setActiveModal("create");
@@ -57,12 +65,20 @@ const App = () => {
 
   return (
     <div className='App'>
-      <Header weatherData={weatherData} onClick={handleAddClothes} />
-      <Main
-        weatherData={weatherData}
-        cards={clothingItems}
-        onCardClick={handleCardClick}
-      />
+      <TemperatureContext.Provider
+        value={{
+          currentTemperatureUnit,
+          weatherData,
+          handleToggleSwitchChange,
+        }}
+      >
+        <Header weatherData={weatherData} onClick={handleAddClothes} />
+        <Main
+          weatherData={weatherData}
+          cards={clothingItems}
+          onCardClick={handleCardClick}
+        />
+      </TemperatureContext.Provider>
       <Footer />
       {activeModal === "create" && (
         <ModalWithForm

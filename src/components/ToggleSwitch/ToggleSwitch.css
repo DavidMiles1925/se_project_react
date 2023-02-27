@@ -1,0 +1,47 @@
+.toggle-switch {
+  display: grid;
+}
+
+.toggle-switch__background-container {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: row;
+  background: transparent;
+}
+
+.toggle-switch__background {
+  line-height: 28px;
+  margin: 0;
+  padding: 2px 8px 0 8px;
+  border: none;
+  border-radius: 14px;
+  font-family: "Cabinet-Grotesk";
+  font-size: 20px;
+}
+
+.toggle-switch__range {
+  grid-column: 1;
+  grid-row: 1;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+  width: 56px;
+  height: 28px;
+  margin: 0;
+  border: 2px solid rgba(126, 126, 126, 1);
+  border-radius: 14px;
+}
+
+.toggle-switch__range::-webkit-slider-runnable-track {
+  background: transparent;
+}
+
+.toggle-switch__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background: transparent;
+  height: 26px;
+  width: 26px;
+  border: none;
+  border-radius: 14px;
+}
