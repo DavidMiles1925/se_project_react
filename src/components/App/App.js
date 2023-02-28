@@ -8,9 +8,9 @@ import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Profile from "../Profile/Profile";
 import Footer from "../Footer/Footer";
-
 import AddItemModal from "../AddItemModal/AddItemModal";
 import ItemModal from "../ItemModal/ItemModal";
+import DeleteCardModal from "../DeleteCardModal/DeleteCardModal";
 import { getWeatherData, filterWeatherData } from "../../utils/weatherAPI";
 import { apiKey, lat, long, defaultClothingItems } from "../../utils/constants";
 
@@ -33,6 +33,14 @@ const App = () => {
     setActiveModal();
   }
 
+  function handleDeleteCard() {
+    console.log(selectedCard);
+    setClothingItems(
+      clothingItems.filter((item) => item._id !== selectedCard._id)
+    );
+    setActiveModal();
+  }
+
   function handleToggleSwitchChange() {
     currentTemperatureUnit === "F"
       ? setCurrentTemperatureUnit("C")
@@ -48,10 +56,15 @@ const App = () => {
     setActiveModal("preview");
   }
 
+  function handleConfirmDelete() {
+    setActiveModal("confirm");
+  }
+
   function closeActiveModal(evt) {
     if (
       evt.target.classList.contains("modal") ||
-      evt.target.classList.contains("modal__close")
+      evt.target.classList.contains("modal__close") ||
+      evt.target.classList.contains("modal__cancel")
     ) {
       setActiveModal();
     }
@@ -121,7 +134,17 @@ const App = () => {
         </ValidationContext.Provider>
       )}
       {activeModal === "preview" && (
-        <ItemModal card={selectedCard} onClose={closeActiveModal} />
+        <ItemModal
+          card={selectedCard}
+          onClose={closeActiveModal}
+          onDelete={handleConfirmDelete}
+        />
+      )}
+      {activeModal === "confirm" && (
+        <DeleteCardModal
+          onClose={closeActiveModal}
+          handleDelete={handleDeleteCard}
+        />
       )}
     </div>
   );

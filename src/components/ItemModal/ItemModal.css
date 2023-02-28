@@ -1,4 +1,4 @@
-.modal {
+.modal__preview {
   position: fixed;
   top: 0;
   left: 0;
@@ -28,8 +28,19 @@
   border-top-left-radius: 19px;
 }
 
+.modal__description-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
 .modal__description {
   margin: 8px 0 0 32px;
+}
+
+.modal__delete-link {
+  margin: 8px 32px 0 0;
+  color: rgba(255, 77, 0, 1);
+  cursor: pointer;
 }
 
 @media screen and (max-width: 560px) {
