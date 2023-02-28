@@ -6,57 +6,54 @@ function ToggleSwtich() {
   const { currentTemperatureUnit, handleToggleSwitchChange } =
     useContext(TemperatureContext);
   const [fahrColor, setFahrColor] = useState("");
-  const [fahrBackColor, setFahrBackColor] = useState("");
   const [celColor, setCelColor] = useState("");
-  const [celBackColor, setCelBackColor] = useState("");
 
   useEffect(() => {
     if (currentTemperatureUnit === "F") {
       setFahrColor("white");
-      setFahrBackColor("black");
     } else {
       setFahrColor("rgba(126, 126, 126, 1)");
-      setFahrBackColor("white");
     }
   }, [currentTemperatureUnit]);
 
   useEffect(() => {
     if (currentTemperatureUnit === "C") {
       setCelColor("white");
-      setCelBackColor("black");
     } else {
       setCelColor("rgba(126, 126, 126, 1)");
-      setCelBackColor("white");
     }
   }, [currentTemperatureUnit]);
 
-  console.log(currentTemperatureUnit);
-
   return (
-    <div className='toggle-switch'>
-      <div className='toggle-switch__background-container'>
+    <>
+      <input
+        className='toggle-switch__checkbox'
+        id={`toggle-switch-new`}
+        type='checkbox'
+        onChange={handleToggleSwitchChange}
+      />
+      <label className='toggle-switch__label' htmlFor={`toggle-switch-new`}>
+        <span className={`toggle-switch__button`} />
         <p
-          className='toggle-switch__background toggle-switch__background_f'
-          style={{ color: fahrColor, background: fahrBackColor }}
+          className='toggle-switch__element toggle-switch__element_back toggle-switch__element_f'
+          style={{ color: fahrColor }}
         >
           F
         </p>
         <p
-          className='toggle-switch__background toggle-switch__background_c'
-          style={{ color: celColor, background: celBackColor }}
+          className='toggle-switch__element toggle-switch__element_back toggle-switch__element_c'
+          style={{ color: celColor }}
         >
           C
         </p>
-      </div>
-      <input
-        type='range'
-        className='toggle-switch__range'
-        min={1}
-        max={2}
-        defaultValue={1}
-        onChange={handleToggleSwitchChange}
-      />
-    </div>
+        <p className='toggle-switch__element toggle-switch__element_front toggle-switch__element_f'>
+          F
+        </p>
+        <p className='toggle-switch__element toggle-switch__element_front toggle-switch__element_c'>
+          C
+        </p>
+      </label>
+    </>
   );
 }
 

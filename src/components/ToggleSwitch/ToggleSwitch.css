@@ -1,60 +1,83 @@
-.toggle-switch {
+.toggle-switch__checkbox {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+
+.toggle-switch__label {
   display: grid;
-}
-
-.toggle-switch__background-container {
-  grid-column: 1;
-  grid-row: 1;
-  display: flex;
-  flex-direction: row;
-  background: transparent;
-}
-
-.toggle-switch__background {
-  line-height: 28px;
-  margin: 0;
-  padding: 2px 8px 0 8px;
-  border: none;
-  border-radius: 14px;
-  font-family: "Cabinet-Grotesk";
-  font-size: 20px;
-}
-
-.toggle-switch__range {
-  grid-column: 1;
-  grid-row: 1;
-  background: transparent;
-  appearance: none;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  width: 56px;
+  width: 56x;
   height: 28px;
-  margin: 0;
+  background: white;
+  border-radius: 100px;
+  position: relative;
+  transition: background-color 0.2s;
   border: 2px solid rgba(126, 126, 126, 1);
-  border-radius: 14px;
 }
 
-.toggle-switch__range::-webkit-slider-runnable-track {
-  background: transparent;
+.toggle-switch__label:hover {
+  border: 2px solid black;
 }
 
-input[type="range"]::-moz-range-track {
-  background: transparent;
+.toggle-switch__label:hover .toggle-switch__element_back {
+  color: black;
 }
 
-.toggle-switch__range::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  background: transparent;
-  height: 26px;
-  width: 26px;
+.toggle-switch__label .toggle-switch__button {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 28px;
+  height: 28px;
+  border-radius: 45px;
+  transition: 0.2s;
+  background: black;
+  z-index: 0;
+}
+
+.toggle-switch__checkbox:checked
+  + .toggle-switch__label
+  .toggle-switch__button {
+  left: calc(100%);
+  transform: translateX(-100%);
+}
+
+.toggle-switch__element {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  width: 28px;
+  margin: 0;
   border: none;
-  border-radius: 14px;
+  border-radius: 12px;
+  font-family: "Cabinet-Grotesk";
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: bold;
 }
 
-.toggle-switch__range::-moz-range-thumb {
-  appearance: none;
+.toggle-switch__element_front {
+  color: transparent;
   background: transparent;
-  height: 26px;
-  width: 26px;
-  border: none;
-  border-radius: 14px;
+  z-index: 2;
+}
+.toggle-switch__element_back {
+  color: black;
+  background: transparent;
+  z-index: 1;
+}
+
+.toggle-switch__element_f {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.toggle-switch__element_c {
+  grid-column: 2;
+  grid-row: 1;
 }
