@@ -1,89 +1,139 @@
-import { useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   ValidationContext,
   showInputError,
   hideInputError,
-  hasInvalidInput,
 } from "../../contexts/ValidationContext";
+import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import "./AddItemModal.css";
 
 function AddItemModal() {
-  const { setDisableButton } = useContext(ValidationContext);
+  const { setDisableButton, handleAddItemSubmit } =
+    useContext(ValidationContext);
+  const [nameState, setNameState] = useState({
+    valid: false,
+    value: "",
+  });
+  const [linkState, setLinkState] = useState({
+    valid: false,
+    value: "",
+  });
+  const [weatherState, setWeatherState] = useState();
 
   function checkInputValidity(e) {
-    setDisableButton(hasInvalidInput);
     if (e.target.checkValidity()) {
       hideInputError(e.target);
+      return true;
     } else {
       showInputError(e.target, e.target.validationMessage);
+      return false;
     }
   }
 
+  function handleNameChange(e) {
+    setNameState({ valid: checkInputValidity(e), value: e.target.value });
+  }
+
+  function handleLinkChange(e) {
+    setLinkState({
+      valid: checkInputValidity(e),
+      value: e.target.value,
+    });
+  }
+
+  function handleWeatherChange(e) {
+    setWeatherState(e.target.value);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    handleAddItemSubmit(nameState.value, linkState.value, weatherState);
+  }
+
+  useEffect(() => {
+    setDisableButton(!(nameState.valid && linkState.valid && weatherState));
+  }, [nameState, linkState, weatherState, setDisableButton]);
+
+  useEffect(() => {
+    setNameState({ valid: false, value: "" });
+    setLinkState({ valid: false, value: "" });
+    setWeatherState();
+  }, []);
+
   return (
     <>
-      <label className='modal__label'>Name</label>
-      <input
-        className='modal__input modal__input_type_text'
-        type='text'
-        name='name'
-        id='name'
-        placeholder='Title'
-        required
-        minLength='1'
-        maxLength='30'
-        onChange={checkInputValidity}
-      />
-      <span className='modal__error name__error' id='name-error'></span>
-
-      <label className='modal__label'>Link</label>
-      <input
-        className='modal__input modal__input_type_text'
-        type='url'
-        name='link'
-        id='link'
-        placeholder='URL'
-        required
-        onChange={checkInputValidity}
-      />
-      <span className='modal__error link__error' id='link_error'></span>
-      <label className='modal__label'>Select the weather type</label>
-      <div className='modal__radio-container'>
-        <label className='modal__label modal__label_type_radio'>
-          <input
-            className='modal__input modal__input_type_radio'
-            type='radio'
-            name='weatherType'
-            id='choiceHot'
-            value='hot'
-            defaultChecked
-          />
-          Hot
-        </label>
-      </div>
-      <div className='modal__radio-container'>
-        <label className='modal__label modal__label_type_radio'>
-          <input
-            className='modal__input modal__input_type_radio'
-            type='radio'
-            name='weatherType'
-            id='choiceWarm'
-            value='warm'
-          />
-          Warm
-        </label>
-      </div>
-      <div className='modal__radio-container'>
-        <label className='modal__label modal__label_type_radio'>
-          <input
-            className='modal__input modal__input_type_radio'
-            type='radio'
-            name='weatherType'
-            id='choiceCold'
-            value='cold'
-          />
-          Cold
-        </label>
-      </div>
+      <ModalWithForm
+        title='New Garment'
+        name='new-card'
+        buttonText='Add Garment'
+        handleSubmit={handleSubmit}
+      >
+        <label className='modal__label'>Name</label>
+        <input
+          className='modal__input modal__input_type_text'
+          type='text'
+          name='name'
+          id='name'
+          placeholder='Title'
+          required
+          minLength='1'
+          maxLength='30'
+          value={nameState.value}
+          onChange={handleNameChange}
+        />
+        <span className='modal__error name__error' id='name-error'></span>
+        <label className='modal__label'>Link</label>
+        <input
+          className='modal__input modal__input_type_text'
+          type='url'
+          name='link'
+          id='link'
+          placeholder='URL'
+          required
+          onChange={handleLinkChange}
+        />
+        <span className='modal__error link__error' id='link_error'></span>
+        <label className='modal__label'>Select the weather type</label>
+        <div className='modal__radio-container'>
+          <label className='modal__label modal__label_type_radio'>
+            <input
+              className='modal__input modal__input_type_radio'
+              type='radio'
+              name='weatherType'
+              id='choiceHot'
+              value='hot'
+              onChange={handleWeatherChange}
+            />
+            Hot
+          </label>
+        </div>
+        <div className='modal__radio-container'>
+          <label className='modal__label modal__label_type_radio'>
+            <input
+              className='modal__input modal__input_type_radio'
+              type='radio'
+              name='weatherType'
+              id='choiceWarm'
+              value='warm'
+              onChange={handleWeatherChange}
+            />
+            Warm
+          </label>
+        </div>
+        <div className='modal__radio-container'>
+          <label className='modal__label modal__label_type_radio'>
+            <input
+              className='modal__input modal__input_type_radio'
+              type='radio'
+              name='weatherType'
+              id='choiceCold'
+              value='cold'
+              onChange={handleWeatherChange}
+            />
+            Cold
+          </label>
+        </div>
+      </ModalWithForm>
     </>
   );
 }

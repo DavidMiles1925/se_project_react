@@ -19,6 +19,9 @@ function WeatherCard({ weatherData, deg, unit }) {
         );
       })
     );
+    setBackColor(
+      weatherData.isDay ? "rgba(0, 163, 255, 1)" : "rgba(40, 104, 151, 1)"
+    );
   }, [weatherData.condition, weatherData.isDay]);
 
   useEffect(() => {

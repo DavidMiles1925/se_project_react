@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { Route, Switch } from "react-router-dom";
 import { TemperatureContext } from "../../contexts/TemperatureContext";
 import { ValidationContext } from "../../contexts/ValidationContext";
 import "./App.css";
 import "../../fonts/fonts.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
+import Profile from "../Profile/Profile";
 import Footer from "../Footer/Footer";
-import ModalWithForm from "../ModalWithForm/ModalWithForm";
+
 import AddItemModal from "../AddItemModal/AddItemModal";
 import ItemModal from "../ItemModal/ItemModal";
 import { getWeatherData, filterWeatherData } from "../../utils/weatherAPI";
@@ -22,6 +24,13 @@ const App = () => {
 
   function handleSubmitButtonChange() {
     setDisableButton(!disableButton);
+  }
+
+  function handleAddItemSubmit(name, link, weather) {
+    const _id = clothingItems.length;
+    const item = { _id, name, weather, link };
+    setClothingItems([item, ...clothingItems]);
+    setActiveModal();
   }
 
   function handleToggleSwitchChange() {
@@ -80,11 +89,22 @@ const App = () => {
         }}
       >
         <Header weatherData={weatherData} onClick={handleAddClothes} />
-        <Main
-          weatherData={weatherData}
-          cards={clothingItems}
-          onCardClick={handleCardClick}
-        />
+        <Switch>
+          <Route path='/profile'>
+            <Profile
+              cards={clothingItems}
+              onCardClick={handleCardClick}
+              addClothes={handleAddClothes}
+            />
+          </Route>
+          <Route path='/'>
+            <Main
+              weatherData={weatherData}
+              cards={clothingItems}
+              onCardClick={handleCardClick}
+            />
+          </Route>
+        </Switch>
       </TemperatureContext.Provider>
       <Footer />
       {activeModal === "create" && (
@@ -93,16 +113,11 @@ const App = () => {
             disableButton,
             setDisableButton,
             handleSubmitButtonChange,
+            closeActiveModal,
+            handleAddItemSubmit,
           }}
         >
-          <ModalWithForm
-            title='New Garment'
-            name='new-card'
-            buttonText='Add Garment'
-            onClose={closeActiveModal}
-          >
-            <AddItemModal />
-          </ModalWithForm>
+          <AddItemModal />
         </ValidationContext.Provider>
       )}
       {activeModal === "preview" && (

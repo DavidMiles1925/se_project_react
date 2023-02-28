@@ -115,11 +115,6 @@ const defaultClothingItems = [
 ];
 
 const configValidate = {
-  formSelector: ".modal__form",
-  formFieldsetSelector: ".modal__fieldset",
-  inputSelector: ".modal__input",
-  submitButtonSelector: ".modal__submit",
-  inactiveButtonClass: "modal__submit_inactive",
   inputErrorClass: "modal__input_type_error",
   errorClass: "modal__error_visible",
 };
