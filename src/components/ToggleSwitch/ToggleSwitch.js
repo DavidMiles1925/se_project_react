@@ -35,21 +35,15 @@ function ToggleSwtich() {
       <label className='toggle-switch__label' htmlFor={`toggle-switch-new`}>
         <span className={`toggle-switch__button`} />
         <p
-          className='toggle-switch__element toggle-switch__element_back toggle-switch__element_f'
+          className='toggle-switch__element toggle-switch__element_f'
           style={{ color: fahrColor }}
         >
           F
         </p>
         <p
-          className='toggle-switch__element toggle-switch__element_back toggle-switch__element_c'
+          className='toggle-switch__element toggle-switch__element_c'
           style={{ color: celColor }}
         >
-          C
-        </p>
-        <p className='toggle-switch__element toggle-switch__element_front toggle-switch__element_f'>
-          F
-        </p>
-        <p className='toggle-switch__element toggle-switch__element_front toggle-switch__element_c'>
           C
         </p>
       </label>

@@ -5,7 +5,7 @@
 }
 
 .toggle-switch__label {
-  display: grid;
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -14,7 +14,6 @@
   background: white;
   border-radius: 100px;
   position: relative;
-  transition: background-color 0.2s;
   border: 2px solid rgba(126, 126, 126, 1);
 }
 
@@ -22,7 +21,7 @@
   border: 2px solid black;
 }
 
-.toggle-switch__label:hover .toggle-switch__element_back {
+.toggle-switch__label:hover .toggle-switch__element {
   color: black;
 }
 
@@ -34,9 +33,9 @@
   width: 28px;
   height: 28px;
   border-radius: 45px;
-  transition: 0.2s;
   background: black;
   z-index: 0;
+  transition: 0.2s;
 }
 
 .toggle-switch__checkbox:checked
@@ -59,25 +58,6 @@
   font-size: 14px;
   line-height: 18px;
   font-weight: bold;
-}
-
-.toggle-switch__element_front {
-  color: transparent;
-  background: transparent;
-  z-index: 2;
-}
-.toggle-switch__element_back {
-  color: black;
-  background: transparent;
   z-index: 1;
-}
-
-.toggle-switch__element_f {
-  grid-column: 1;
-  grid-row: 1;
-}
-
-.toggle-switch__element_c {
-  grid-column: 2;
-  grid-row: 1;
+  transition: 0.2s;
 }
