@@ -5,6 +5,7 @@
 }
 
 .toggle-switch__label {
+  margin-left: auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,4 +61,10 @@
   font-weight: bold;
   z-index: 1;
   transition: 0.2s;
+}
+
+@media screen and (max-width: 500px) {
+  .toggle-switch__label {
+    margin: 0 auto 0 auto;
+  }
 }

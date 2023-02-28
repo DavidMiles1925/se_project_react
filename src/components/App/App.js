@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { TemperatureContext } from "../../contexts/TemperatureContext";
+import { ValidationContext } from "../../contexts/ValidationContext";
 import "./App.css";
 import "../../fonts/fonts.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import AddItemModal from "../AddItemModal/AddItemModal";
 import ItemModal from "../ItemModal/ItemModal";
 import { getWeatherData, filterWeatherData } from "../../utils/weatherAPI";
 import { apiKey, lat, long, defaultClothingItems } from "../../utils/constants";
@@ -16,6 +18,11 @@ const App = () => {
   const [activeModal, setActiveModal] = useState();
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
+  const [disableButton, setDisableButton] = useState(true);
+
+  function handleSubmitButtonChange() {
+    setDisableButton(!disableButton);
+  }
 
   function handleToggleSwitchChange() {
     currentTemperatureUnit === "F"
@@ -81,67 +88,22 @@ const App = () => {
       </TemperatureContext.Provider>
       <Footer />
       {activeModal === "create" && (
-        <ModalWithForm
-          title='New Garment'
-          name='new-card'
-          buttonText='Add Garment'
-          onClose={closeActiveModal}
+        <ValidationContext.Provider
+          value={{
+            disableButton,
+            setDisableButton,
+            handleSubmitButtonChange,
+          }}
         >
-          <label className='modal__label'>Name</label>
-          <input
-            className='modal__input modal__input_type_card-name'
-            type='text'
-            name='name'
-            id='name'
-            placeholder='Title'
-            required
-            minLength='1'
-            maxLength='30'
-          />
-          <span className='modal__error' id='name-error'></span>
-
-          <label className='modal__label'>Link</label>
-          <input
-            className='modal__input modal__input_type_link'
-            type='url'
-            name='link'
-            id='link'
-            placeholder='URL'
-            required
-          />
-          <span className='modal__error' id='link-error'></span>
-          <label className='modal__label'>Select the weather type</label>
-          <div className='modal__radio-container'>
-            <input
-              className='modal__input modal__input_type_radio'
-              type='radio'
-              name='weatherType'
-              id='choiceHot'
-              value='hot'
-            />
-            <label className='modal__label'>Hot</label>
-          </div>
-          <div className='modal__radio-container'>
-            <input
-              className='modal__input modal__input_type_radio'
-              type='radio'
-              name='weatherType'
-              id='choiceWarm'
-              value='warm'
-            />
-            <label className='modal__label'>Warm</label>
-          </div>
-          <div className='modal__radio-container'>
-            <input
-              className='modal__input modal__input_type_radio'
-              type='radio'
-              name='weatherType'
-              id='choiceCold'
-              value='cold'
-            />
-            <label className='modal__label'>Cold</label>
-          </div>
-        </ModalWithForm>
+          <ModalWithForm
+            title='New Garment'
+            name='new-card'
+            buttonText='Add Garment'
+            onClose={closeActiveModal}
+          >
+            <AddItemModal />
+          </ModalWithForm>
+        </ValidationContext.Provider>
       )}
       {activeModal === "preview" && (
         <ItemModal card={selectedCard} onClose={closeActiveModal} />

@@ -23,6 +23,14 @@
   font-weight: bold;
 }
 
+.modal__fieldset {
+  display: flex;
+  flex-direction: column;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
 .modal__title {
   font-size: 16px;
   line-height: 20px;
@@ -44,54 +52,13 @@
   cursor: pointer;
 }
 
-.modal__label {
-  margin-bottom: 8px;
-}
-
-.modal__input {
-  margin-bottom: 24px;
-  font-size: 16px;
-  line-height: 20px;
-  width: 440px;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-}
-
-.modal__input_type_radio {
-  margin-bottom: 12px;
-  width: auto;
-}
-
-.modal__radio-container {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.modal__form {
-  display: flex;
-  flex-direction: column;
-}
-
 .modal__submit {
   width: 124px;
   height: 36px;
   padding: 8px, 16px, 8px, 16px;
-  margin: 22px 0px;
+  margin: 24px 0px;
 }
 
 .modal__submit {
   cursor: pointer;
-}
-
-@media screen and (max-width: 560px) {
-  .modal__input {
-    width: 250px;
-  }
-
-  .modal__input_type_radio {
-    margin-bottom: 12px;
-    width: auto;
-  }
 }

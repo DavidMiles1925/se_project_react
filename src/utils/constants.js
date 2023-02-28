@@ -114,4 +114,21 @@ const defaultClothingItems = [
   },
 ];
 
-export { apiKey, lat, long, weatherImages, defaultClothingItems };
+const configValidate = {
+  formSelector: ".modal__form",
+  formFieldsetSelector: ".modal__fieldset",
+  inputSelector: ".modal__input",
+  submitButtonSelector: ".modal__submit",
+  inactiveButtonClass: "modal__submit_inactive",
+  inputErrorClass: "modal__input_type_error",
+  errorClass: "modal__error_visible",
+};
+
+export {
+  apiKey,
+  lat,
+  long,
+  weatherImages,
+  defaultClothingItems,
+  configValidate,
+};
