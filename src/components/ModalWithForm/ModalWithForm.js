@@ -31,8 +31,3 @@ function ModalWithForm({ title, name, buttonText, handleSubmit, children }) {
 }
 
 export default ModalWithForm;
-
-/*<FormValidator
-settings={configValidate}
-formElement={document.querySelector(".modal__form")}
-/> */

@@ -18,22 +18,25 @@ import { getCards, addCard, deleteCard } from "../../utils/api";
 const App = () => {
   const [weatherData, setWeatherData] = useState({});
   const [clothingItems, setClothingItems] = useState([]);
-  const [activeModal, setActiveModal] = useState();
+  const [activeModal, setActiveModal] = useState(null);
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [disableButton, setDisableButton] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleSubmitButtonChange() {
     setDisableButton(!disableButton);
   }
 
   function handleAddItemSubmit(name, link, weather) {
-    const id = clothingItems.length;
+    setIsLoading(true);
+    const id = clothingItems.length + 1;
     const item = { id, name, weather, link };
     addCard(item)
       .then(() => {
         setClothingItems([item, ...clothingItems]);
-        setActiveModal();
+        closeModal();
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -41,12 +44,14 @@ const App = () => {
   }
 
   function handleDeleteCard() {
+    setIsLoading(true);
     deleteCard(selectedCard.id)
       .then(() => {
         setClothingItems(
           clothingItems.filter((item) => item.id !== selectedCard.id)
         );
-        setActiveModal();
+        closeModal();
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -82,6 +87,10 @@ const App = () => {
     }
   }
 
+  function closeModal() {
+    setActiveModal(null);
+  }
+
   useEffect(() => {
     getCards()
       .then((items) => {
@@ -103,16 +112,18 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    if (!activeModal) return;
+
     const handleEscClose = (evt) => {
       if (evt.key === "Escape") {
-        setActiveModal();
+        closeModal();
       }
     };
     document.addEventListener("keydown", handleEscClose);
     return () => {
       document.removeEventListener("keydown", handleEscClose);
     };
-  }, []);
+  }, [activeModal]);
 
   return (
     <div className='App'>
@@ -152,7 +163,7 @@ const App = () => {
             handleAddItemSubmit,
           }}
         >
-          <AddItemModal />
+          <AddItemModal isLoading={isLoading} />
         </ValidationContext.Provider>
       )}
       {activeModal === "preview" && (
@@ -166,6 +177,7 @@ const App = () => {
         <DeleteCardModal
           onClose={closeActiveModal}
           handleDelete={handleDeleteCard}
+          isLoading={isLoading}
         />
       )}
     </div>

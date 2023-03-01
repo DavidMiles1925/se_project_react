@@ -10,15 +10,19 @@ const processServerResponse = (res) => {
   return Promise.reject(`Error: ${res.status}`);
 };
 
+function request(url, options) {
+  return fetch(url, options).then(processServerResponse);
+}
+
 function getCards() {
-  return fetch(`${baseUrl}/items`, {
+  return request(`${baseUrl}/items`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
-  }).then(processServerResponse);
+  });
 }
 
 function addCard(data) {
-  return fetch(`${baseUrl}/items`, {
+  return request(`${baseUrl}/items`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -27,16 +31,16 @@ function addCard(data) {
       link: data.link,
       weather: data.weather,
     }),
-  }).then(processServerResponse);
+  });
 }
 
 function deleteCard(id) {
-  return fetch(`${baseUrl}/items/${id}`, {
+  return request(`${baseUrl}/items/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
-  }).then(processServerResponse);
+  });
 }
 
 export { getCards, addCard, deleteCard };
