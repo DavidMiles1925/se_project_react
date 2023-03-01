@@ -44,7 +44,7 @@ const App = () => {
     deleteCard(selectedCard.id)
       .then(() => {
         setClothingItems(
-          clothingItems.filter((item) => item.id !== selectedCard._id)
+          clothingItems.filter((item) => item.id !== selectedCard.id)
         );
         setActiveModal();
       })
