@@ -33,7 +33,7 @@
 .profile__main {
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
 }
 
 .profile__main-text {
@@ -61,4 +61,35 @@
   flex-wrap: wrap;
   column-gap: 17px;
   row-gap: 20px;
+}
+
+@media screen and (max-width: 1200px) {
+  .profile__main {
+    justify-content: flex-start;
+  }
+}
+
+@media screen and (max-width: 798px) {
+  .profile {
+    grid-template-rows: 56px auto;
+    grid-template-columns: 100% 0%;
+    justify-content: center;
+  }
+
+  .profile__side-bar {
+    grid-row: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .profile__main {
+    grid-row: 2;
+    grid-column: 1;
+    grid-template-columns: repeat(auto-fill, 300px);
+    align-items: center;
+  }
+
+  .profile__cards {
+    justify-content: center;
+  }
 }

@@ -12,11 +12,12 @@ import AddItemModal from "../AddItemModal/AddItemModal";
 import ItemModal from "../ItemModal/ItemModal";
 import DeleteCardModal from "../DeleteCardModal/DeleteCardModal";
 import { getWeatherData, filterWeatherData } from "../../utils/weatherAPI";
-import { apiKey, lat, long, defaultClothingItems } from "../../utils/constants";
+import { apiKey, lat, long } from "../../utils/constants";
+import { getCards, addCard, deleteCard } from "../../utils/api";
 
 const App = () => {
   const [weatherData, setWeatherData] = useState({});
-  const [clothingItems, setClothingItems] = useState(defaultClothingItems);
+  const [clothingItems, setClothingItems] = useState([]);
   const [activeModal, setActiveModal] = useState();
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
@@ -27,18 +28,29 @@ const App = () => {
   }
 
   function handleAddItemSubmit(name, link, weather) {
-    const _id = clothingItems.length;
-    const item = { _id, name, weather, link };
-    setClothingItems([item, ...clothingItems]);
-    setActiveModal();
+    const id = clothingItems.length;
+    const item = { id, name, weather, link };
+    addCard(item)
+      .then(() => {
+        setClothingItems([item, ...clothingItems]);
+        setActiveModal();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleDeleteCard() {
-    console.log(selectedCard);
-    setClothingItems(
-      clothingItems.filter((item) => item._id !== selectedCard._id)
-    );
-    setActiveModal();
+    deleteCard(selectedCard.id)
+      .then(() => {
+        setClothingItems(
+          clothingItems.filter((item) => item.id !== selectedCard._id)
+        );
+        setActiveModal();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleToggleSwitchChange() {
@@ -69,6 +81,16 @@ const App = () => {
       setActiveModal();
     }
   }
+
+  useEffect(() => {
+    getCards()
+      .then((items) => {
+        setClothingItems(items);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [clothingItems]);
 
   useEffect(() => {
     if (lat && long) {

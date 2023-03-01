@@ -22,7 +22,7 @@ function Profile({ cards, onCardClick, addClothes }) {
           </div>
           <ul className='profile__cards'>
             {cards.map((card) => (
-              <ItemCard key={card._id} card={card} onCardClick={onCardClick} />
+              <ItemCard key={card.id} card={card} onCardClick={onCardClick} />
             ))}
           </ul>
         </div>
