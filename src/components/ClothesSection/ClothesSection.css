@@ -1,0 +1,32 @@
+.clothes__main-text {
+  display: flex;
+}
+
+.clothes__your-items {
+  padding: 0 10px;
+  margin-bottom: 8px;
+}
+
+.clothes__add-clothes {
+  padding: 0 10px;
+  margin-bottom: 8px;
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
+
+.clothes__cards {
+  grid-row: 1;
+  grid-column: 2;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 17px;
+  row-gap: 20px;
+}
+
+@media screen and (max-width: 798px) {
+  .clothes__cards {
+    justify-content: center;
+  }
+}

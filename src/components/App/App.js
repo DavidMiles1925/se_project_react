@@ -90,7 +90,7 @@ const App = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [clothingItems]);
+  }, []);
 
   useEffect(() => {
     if (lat && long) {

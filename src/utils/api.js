@@ -33,7 +33,9 @@ function addCard(data) {
 function deleteCard(id) {
   return fetch(`${baseUrl}/items/${id}`, {
     method: "DELETE",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
   }).then(processServerResponse);
 }
 

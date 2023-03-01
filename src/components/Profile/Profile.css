@@ -16,51 +16,10 @@
   align-items: start;
 }
 
-.profile__info {
-  display: flex;
-  align-items: center;
-}
-
-.profile__username {
-  margin: 0 12px;
-}
-
-.profile__avatar {
-  width: 56px;
-  height: 56px;
-}
-
 .profile__main {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-}
-
-.profile__main-text {
-  display: flex;
-}
-
-.profile__your-items {
-  padding: 0 10px;
-  margin-bottom: 8px;
-}
-
-.profile__add-clothes {
-  padding: 0 10px;
-  margin-bottom: 8px;
-  color: rgba(0, 0, 0, 0.6);
-  cursor: pointer;
-}
-
-.profile__cards {
-  grid-row: 1;
-  grid-column: 2;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 17px;
-  row-gap: 20px;
 }
 
 @media screen and (max-width: 1200px) {
@@ -87,9 +46,5 @@
     grid-column: 1;
     grid-template-columns: repeat(auto-fill, 300px);
     align-items: center;
-  }
-
-  .profile__cards {
-    justify-content: center;
   }
 }
