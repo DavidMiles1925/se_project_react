@@ -11,6 +11,8 @@ import Footer from "../Footer/Footer";
 import AddItemModal from "../AddItemModal/AddItemModal";
 import ItemModal from "../ItemModal/ItemModal";
 import DeleteCardModal from "../DeleteCardModal/DeleteCardModal";
+import RegisterModal from "../RegisterModal/RegisterModal";
+import LoginModal from "../LoginModal/LoginModal";
 import { getWeatherData, filterWeatherData } from "../../utils/weatherAPI";
 import { apiKey, lat, long } from "../../utils/constants";
 import { getCards, addCard, deleteCard } from "../../utils/api";
@@ -26,6 +28,16 @@ const App = () => {
 
   function handleSubmitButtonChange() {
     setDisableButton(!disableButton);
+  }
+
+  function handleSignupSubmit(email, password, name, avatar) {
+    console.log(
+      `email: ${email} password: ${password} name: ${name} avatar: ${avatar}`
+    );
+  }
+
+  function handleLoginSubmit(email, password) {
+    console.log(`email: ${email} password: ${password}`);
   }
 
   function handleAddItemSubmit(name, link, weather) {
@@ -62,6 +74,10 @@ const App = () => {
     currentTemperatureUnit === "F"
       ? setCurrentTemperatureUnit("C")
       : setCurrentTemperatureUnit("F");
+  }
+
+  function handleSignup() {
+    setActiveModal("signup");
   }
 
   function handleAddClothes() {
@@ -134,7 +150,11 @@ const App = () => {
           handleToggleSwitchChange,
         }}
       >
-        <Header weatherData={weatherData} onClick={handleAddClothes} />
+        <Header
+          weatherData={weatherData}
+          onAddClothes={handleAddClothes}
+          onSignup={handleSignup}
+        />
         <Switch>
           <Route path='/profile'>
             <Profile
@@ -153,6 +173,32 @@ const App = () => {
         </Switch>
       </TemperatureContext.Provider>
       <Footer />
+      {activeModal === "signup" && (
+        <ValidationContext.Provider
+          value={{
+            disableButton,
+            setDisableButton,
+            handleSubmitButtonChange,
+            closeActiveModal,
+            handleSignupSubmit,
+          }}
+        >
+          <RegisterModal isLoading={isLoading} />
+        </ValidationContext.Provider>
+      )}
+      {activeModal === "signin" && (
+        <ValidationContext.Provider
+          value={{
+            disableButton,
+            setDisableButton,
+            handleSubmitButtonChange,
+            closeActiveModal,
+            handleLoginSubmit,
+          }}
+        >
+          <LoginModal isLoading={isLoading} />
+        </ValidationContext.Provider>
+      )}
       {activeModal === "create" && (
         <ValidationContext.Provider
           value={{

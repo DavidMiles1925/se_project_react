@@ -2,7 +2,14 @@ import { ValidationContext } from "../../contexts/ValidationContext";
 import "./ModalWithForm.css";
 import { useContext } from "react";
 
-function ModalWithForm({ title, name, buttonText, handleSubmit, children }) {
+function ModalWithForm({
+  title,
+  name,
+  buttonText,
+  handleSubmit,
+  buttonModifier,
+  children,
+}) {
   const { disableButton, closeActiveModal } = useContext(ValidationContext);
 
   return (
@@ -23,6 +30,7 @@ function ModalWithForm({ title, name, buttonText, handleSubmit, children }) {
             >
               {buttonText}
             </button>
+            {buttonModifier.value && <span>{buttonModifier.text}</span>}
           </fieldset>
         </form>
       </div>

@@ -4,7 +4,7 @@ import avatar from "../../images/avatar.png";
 import ToggleSwtich from "../ToggleSwitch/ToggleSwitch";
 import "./Header.css";
 
-const Header = ({ weatherData, onClick }) => {
+const Header = ({ weatherData, onAddClothes, onSignup }) => {
   const currentDate = new Date().toLocaleString("default", {
     month: "long",
     day: "numeric",
@@ -19,7 +19,13 @@ const Header = ({ weatherData, onClick }) => {
         {currentDate}, {weatherData.city}
       </p>
       <ToggleSwtich />
-      <button className='header__button' onClick={onClick}>
+      <button
+        className='header__button header__button_type_signup'
+        onClick={onSignup}
+      >
+        Sign Up
+      </button>
+      <button className='header__button' onClick={onAddClothes}>
         + Add Clothes
       </button>
       <Link to='/profile' className='header__profile-link'>

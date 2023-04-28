@@ -5,7 +5,6 @@ import {
   hideInputError,
 } from "../../contexts/ValidationContext";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-import "./AddItemModal.css";
 
 function AddItemModal({ isLoading }) {
   const { setDisableButton, handleAddItemSubmit } =
@@ -66,6 +65,7 @@ function AddItemModal({ isLoading }) {
       name='new-card'
       buttonText={isLoading ? "Saving..." : "Save"}
       handleSubmit={handleSubmit}
+      buttonModifier={{ value: false, text: "", path: "" }}
     >
       <label className='modal__label'>Name</label>
       <input
