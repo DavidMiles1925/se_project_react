@@ -1,5 +1,4 @@
-const baseUrl =
-  "https://my-json-server.typicode.com/DavidMiles1925/se_project_react";
+const baseUrl = "http://localhost:3001";
 
 const processServerResponse = (res) => {
   if (res.ok) {
@@ -37,4 +36,14 @@ function signin(data) {
   });
 }
 
-export { signup, signin };
+function checkToken(token) {
+  return request(`${baseUrl}/users/me`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+export { signup, signin, checkToken };

@@ -14,7 +14,7 @@ function ModalWithForm({
     useContext(ValidationContext);
 
   return (
-    <div className={`modal modal_type_${name}`} onClick={closeActiveModal}>
+    <div className={`modal modal_type_${name}`} onMouseDown={closeActiveModal}>
       <div className='modal__window'>
         <button
           className='modal__close modal__close-form'

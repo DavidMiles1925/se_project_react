@@ -16,7 +16,7 @@ import LoginModal from "../LoginModal/LoginModal";
 import { getWeatherData, filterWeatherData } from "../../utils/weatherAPI";
 import { apiKey, lat, long } from "../../utils/constants";
 import { getCards, addCard, deleteCard } from "../../utils/api";
-import { signup } from "../../utils/auth";
+import { checkToken, signin, signup } from "../../utils/auth";
 
 const App = () => {
   const [weatherData, setWeatherData] = useState({});
@@ -26,29 +26,46 @@ const App = () => {
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [disableButton, setDisableButton] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [userData, setUserData] = useState({});
 
   function handleSubmitButtonChange() {
     setDisableButton(!disableButton);
   }
 
   function handleSignupSubmit(email, password, name, avatar) {
-    console.log(
-      `email: ${email} password: ${password} name: ${name} avatar: ${avatar}`
-    );
     setIsLoading(true);
     const user = { email, password, name, avatar };
     signup(user)
-      .then(() => {
+      .then((res) => {
+        handleLoginSubmit(email, password);
         closeModal();
         setIsLoading(false);
       })
       .catch((err) => {
+        if (err === "Error: 409") {
+          alert("This user already exists, please use a unique email address.");
+        }
+        setIsLoading(false);
         console.log(err);
       });
   }
 
   function handleLoginSubmit(email, password) {
     console.log(`email: ${email} password: ${password}`);
+    const user = { email, password };
+    signin(user)
+      .then((res) => {
+        localStorage.setItem("token", res.token);
+        console.log(res.token);
+        setLoggedIn(true);
+        closeModal();
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        console.log(err);
+      });
   }
 
   function handleAddItemSubmit(name, link, weather) {
@@ -122,6 +139,19 @@ const App = () => {
     setActiveModal(null);
   }
 
+  function checkAccess() {
+    const jwt = localStorage.getItem("token");
+    if (jwt) {
+      checkToken(jwt).then((res) => {
+        setUserData(JSON.parse(JSON.stringify(res.data)));
+        console.log(userData);
+        setLoggedIn(true);
+      });
+    } else {
+      console.log("no jwt");
+    }
+  }
+
   useEffect(() => {
     getCards()
       .then((items) => {
@@ -130,7 +160,7 @@ const App = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [loggedIn]);
 
   useEffect(() => {
     if (lat && long) {
@@ -140,6 +170,10 @@ const App = () => {
         })
         .catch((err) => console.log(err));
     }
+  }, []);
+
+  useEffect(() => {
+    checkAccess();
   }, []);
 
   useEffect(() => {
@@ -170,6 +204,7 @@ const App = () => {
           onAddClothes={handleAddClothes}
           onSignup={handleSignup}
           onSignin={handleSignin}
+          loggedIn={loggedIn}
         />
         <Switch>
           <Route path='/profile'>
