@@ -5,7 +5,7 @@ function ItemModal({ card, onClose, onDelete }) {
     <div className='modal modal__preview' onClick={onClose}>
       <div className='modal__container'>
         <button className='modal__close modal__close-item' onClick={onClose} />
-        <img className='modal__image' src={card.link} alt='card' />
+        <img className='modal__image' src={card.imageUrl} alt='card' />
         <div className='modal__description-wrapper'>
           <p className='modal__description'>{card.name}</p>
           <p className='modal__delete-link' onClick={onDelete}>

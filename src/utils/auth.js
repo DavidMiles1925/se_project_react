@@ -36,3 +36,5 @@ function signin(data) {
     body: JSON.stringify({ email, password }),
   });
 }
+
+export { signup, signin };

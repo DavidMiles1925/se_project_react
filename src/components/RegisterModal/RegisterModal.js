@@ -78,7 +78,7 @@ function RegisterModal({ isLoading }) {
       name='signup'
       buttonText={isLoading ? "Saving..." : "Signup"}
       handleSubmit={handleSubmit}
-      buttonModifier={{ value: true, text: "or Log In", path: "/signin" }}
+      buttonModifier={{ value: true, text: " or Log In", path: "signin" }}
     >
       <label className='modal__label'>Email*</label>
       <input

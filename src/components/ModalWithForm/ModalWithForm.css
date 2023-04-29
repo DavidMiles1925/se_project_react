@@ -57,6 +57,10 @@
   margin-bottom: 8px;
 }
 
+.modal__label_type_radio {
+  margin-top: 0;
+}
+
 .modal__input {
   font-size: 16px;
   line-height: 20px;
@@ -88,6 +92,11 @@
   margin: 24px 0px;
 }
 
+.modal__buton-container {
+  display: flex;
+  flex-direction: row;
+}
+
 .modal__submit {
   cursor: pointer;
 }
@@ -95,6 +104,21 @@
 .modal__submit_inactive {
   background-color: rgba(0, 0, 0, 0.2);
   pointer-events: none;
+}
+
+.modal__button-modifier {
+  background-color: transparent;
+  border: none;
+  font-family: "Cabinet-Grotesk";
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: bold;
+  margin: 0 8px 0;
+}
+
+.modal__button-modifier:hover {
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
 }
 
 .modal__error_visible {

@@ -4,7 +4,7 @@ function ItemCard({ card, onCardClick }) {
   return (
     <li
       className='card'
-      style={{ backgroundImage: `url(${card.link})` }}
+      style={{ backgroundImage: `url(${card.imageUrl})` }}
       onClick={() => {
         onCardClick(card);
       }}

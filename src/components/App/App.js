@@ -16,6 +16,7 @@ import LoginModal from "../LoginModal/LoginModal";
 import { getWeatherData, filterWeatherData } from "../../utils/weatherAPI";
 import { apiKey, lat, long } from "../../utils/constants";
 import { getCards, addCard, deleteCard } from "../../utils/api";
+import { signup } from "../../utils/auth";
 
 const App = () => {
   const [weatherData, setWeatherData] = useState({});
@@ -34,6 +35,16 @@ const App = () => {
     console.log(
       `email: ${email} password: ${password} name: ${name} avatar: ${avatar}`
     );
+    setIsLoading(true);
+    const user = { email, password, name, avatar };
+    signup(user)
+      .then(() => {
+        closeModal();
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleLoginSubmit(email, password) {
@@ -78,6 +89,10 @@ const App = () => {
 
   function handleSignup() {
     setActiveModal("signup");
+  }
+
+  function handleSignin() {
+    setActiveModal("signin");
   }
 
   function handleAddClothes() {
@@ -154,6 +169,7 @@ const App = () => {
           weatherData={weatherData}
           onAddClothes={handleAddClothes}
           onSignup={handleSignup}
+          onSignin={handleSignin}
         />
         <Switch>
           <Route path='/profile'>
@@ -181,6 +197,7 @@ const App = () => {
             handleSubmitButtonChange,
             closeActiveModal,
             handleSignupSubmit,
+            setActiveModal,
           }}
         >
           <RegisterModal isLoading={isLoading} />
@@ -194,6 +211,7 @@ const App = () => {
             handleSubmitButtonChange,
             closeActiveModal,
             handleLoginSubmit,
+            setActiveModal,
           }}
         >
           <LoginModal isLoading={isLoading} />

@@ -49,11 +49,11 @@ function LoginModal({ isLoading }) {
 
   return (
     <ModalWithForm
-      title='Sign Up'
-      name='signup'
-      buttonText={isLoading ? "Saving..." : "Signup"}
+      title='Log In'
+      name='signin'
+      buttonText={isLoading ? "Saving..." : "Sign In"}
       handleSubmit={handleSubmit}
-      buttonModifier={{ value: true, text: "or Register", path: "/signup" }}
+      buttonModifier={{ value: true, text: " or Register", path: "signup" }}
     >
       <label className='modal__label'>Email*</label>
       <input
