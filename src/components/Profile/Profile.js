@@ -1,14 +1,22 @@
 import React from "react";
-
 import ClothesSection from "../ClothesSection/ClothesSection";
 import SideBar from "../SideBar/SideBar";
 import "./Profile.css";
 
-function Profile({ cards, onCardClick, addClothes }) {
+function Profile({
+  cards,
+  onCardClick,
+  addClothes,
+  handleEditProfile,
+  handleSignOut,
+}) {
   return (
     <div className='profile'>
       <div className='profile__side-bar'>
-        <SideBar />
+        <SideBar
+          handleEditProfile={handleEditProfile}
+          handleSignOut={handleSignOut}
+        />
       </div>
       <div className='profile__main'>
         <ClothesSection

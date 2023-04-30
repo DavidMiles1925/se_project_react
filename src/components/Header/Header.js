@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import logo from "../../images/logo.svg";
-import avatar from "../../images/avatar.png";
 import ToggleSwtich from "../ToggleSwitch/ToggleSwitch";
 import "./Header.css";
 
 const Header = ({
+  userData,
   weatherData,
   onAddClothes,
   onSignup,
@@ -18,7 +18,7 @@ const Header = ({
 
   return (
     <header className='header'>
-      <Link to='/'>
+      <Link to='/main'>
         <img className='logo' src={logo} alt='logo' />
       </Link>
       <p className='header__date'>
@@ -48,8 +48,8 @@ const Header = ({
       )}
       {loggedIn && (
         <Link to='/profile' className='header__profile-link'>
-          <p className='header__username'>David Miles</p>
-          <img className='header__avatar' src={avatar} alt='avatar' />
+          <p className='header__username'>{userData.name}</p>
+          <img className='header__avatar' src={userData.avatar} alt='avatar' />
         </Link>
       )}
     </header>

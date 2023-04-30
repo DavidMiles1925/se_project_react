@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
+import {
+  Redirect,
+  useHistory,
+} from "react-router-dom/cjs/react-router-dom.min";
 import { TemperatureContext } from "../../contexts/TemperatureContext";
 import { ValidationContext } from "../../contexts/ValidationContext";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import "./App.css";
 import "../../fonts/fonts.css";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Profile from "../Profile/Profile";
@@ -13,6 +19,7 @@ import ItemModal from "../ItemModal/ItemModal";
 import DeleteCardModal from "../DeleteCardModal/DeleteCardModal";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import LoginModal from "../LoginModal/LoginModal";
+import EditProfileModal from "../EditProfileModal/EditProfileModal";
 import { getWeatherData, filterWeatherData } from "../../utils/weatherAPI";
 import { apiKey, lat, long } from "../../utils/constants";
 import { getCards, addCard, deleteCard } from "../../utils/api";
@@ -29,13 +36,17 @@ const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userData, setUserData] = useState({});
 
+  const history = useHistory();
+
   function handleSubmitButtonChange() {
     setDisableButton(!disableButton);
   }
 
   function handleSignupSubmit(email, password, name, avatar) {
     setIsLoading(true);
+
     const user = { email, password, name, avatar };
+
     signup(user)
       .then((res) => {
         handleLoginSubmit(email, password);
@@ -52,26 +63,42 @@ const App = () => {
   }
 
   function handleLoginSubmit(email, password) {
-    console.log(`email: ${email} password: ${password}`);
+    setIsLoading(true);
+
     const user = { email, password };
+
     signin(user)
       .then((res) => {
         localStorage.setItem("token", res.token);
-        console.log(res.token);
+
+        checkToken(res.token).then((res) => {
+          setUserData(JSON.parse(JSON.stringify(res.data)));
+        });
+
         setLoggedIn(true);
         closeModal();
+        history.push("/");
         setIsLoading(false);
       })
       .catch((err) => {
+        if (err === "Error: 401") {
+          alert("Invalid username or password.");
+        }
         setIsLoading(false);
         console.log(err);
       });
   }
 
+  function handleUpdateSubmit() {
+    console.log("Update Submit");
+  }
+
   function handleAddItemSubmit(name, link, weather) {
     setIsLoading(true);
+
     const id = clothingItems.length + 1;
     const item = { id, name, weather, link };
+
     addCard(item)
       .then(() => {
         setClothingItems([item, ...clothingItems]);
@@ -85,6 +112,7 @@ const App = () => {
 
   function handleDeleteCard() {
     setIsLoading(true);
+
     deleteCard(selectedCard.id)
       .then(() => {
         setClothingItems(
@@ -110,6 +138,10 @@ const App = () => {
 
   function handleSignin() {
     setActiveModal("signin");
+  }
+
+  function handleEditProfile() {
+    setActiveModal("edit");
   }
 
   function handleAddClothes() {
@@ -141,15 +173,25 @@ const App = () => {
 
   function checkAccess() {
     const jwt = localStorage.getItem("token");
+
     if (jwt) {
-      checkToken(jwt).then((res) => {
-        setUserData(JSON.parse(JSON.stringify(res.data)));
-        console.log(userData);
-        setLoggedIn(true);
-      });
+      checkToken(jwt)
+        .then((res) => {
+          setUserData(JSON.parse(JSON.stringify(res.data)));
+          setLoggedIn(true);
+        })
+        .catch((err) => {
+          console.log("No token found ", err.message);
+        });
     } else {
       console.log("no jwt");
     }
+  }
+
+  function handleSignOut() {
+    setLoggedIn(false);
+    localStorage.removeItem("token");
+    history.push("/");
   }
 
   useEffect(() => {
@@ -192,93 +234,116 @@ const App = () => {
 
   return (
     <div className='App'>
-      <TemperatureContext.Provider
-        value={{
-          currentTemperatureUnit,
-          weatherData,
-          handleToggleSwitchChange,
-        }}
-      >
-        <Header
-          weatherData={weatherData}
-          onAddClothes={handleAddClothes}
-          onSignup={handleSignup}
-          onSignin={handleSignin}
-          loggedIn={loggedIn}
-        />
-        <Switch>
-          <Route path='/profile'>
-            <Profile
-              cards={clothingItems}
-              onCardClick={handleCardClick}
-              addClothes={handleAddClothes}
-            />
-          </Route>
-          <Route path='/'>
-            <Main
-              weatherData={weatherData}
-              cards={clothingItems}
-              onCardClick={handleCardClick}
-            />
-          </Route>
-        </Switch>
-      </TemperatureContext.Provider>
-      <Footer />
-      {activeModal === "signup" && (
-        <ValidationContext.Provider
+      <CurrentUserContext.Provider value={{ userData }}>
+        <TemperatureContext.Provider
           value={{
-            disableButton,
-            setDisableButton,
-            handleSubmitButtonChange,
-            closeActiveModal,
-            handleSignupSubmit,
-            setActiveModal,
+            currentTemperatureUnit,
+            weatherData,
+            handleToggleSwitchChange,
           }}
         >
-          <RegisterModal isLoading={isLoading} />
-        </ValidationContext.Provider>
-      )}
-      {activeModal === "signin" && (
-        <ValidationContext.Provider
-          value={{
-            disableButton,
-            setDisableButton,
-            handleSubmitButtonChange,
-            closeActiveModal,
-            handleLoginSubmit,
-            setActiveModal,
-          }}
-        >
-          <LoginModal isLoading={isLoading} />
-        </ValidationContext.Provider>
-      )}
-      {activeModal === "create" && (
-        <ValidationContext.Provider
-          value={{
-            disableButton,
-            setDisableButton,
-            handleSubmitButtonChange,
-            closeActiveModal,
-            handleAddItemSubmit,
-          }}
-        >
-          <AddItemModal isLoading={isLoading} />
-        </ValidationContext.Provider>
-      )}
-      {activeModal === "preview" && (
-        <ItemModal
-          card={selectedCard}
-          onClose={closeActiveModal}
-          onDelete={handleConfirmDelete}
-        />
-      )}
-      {activeModal === "confirm" && (
-        <DeleteCardModal
-          onClose={closeActiveModal}
-          handleDelete={handleDeleteCard}
-          isLoading={isLoading}
-        />
-      )}
+          <Header
+            userData={userData}
+            weatherData={weatherData}
+            onAddClothes={handleAddClothes}
+            onSignup={handleSignup}
+            onSignin={handleSignin}
+            loggedIn={loggedIn}
+          />
+          <Switch>
+            <ProtectedRoute path='/profile' loggedIn={loggedIn}>
+              <Profile
+                userData={userData}
+                cards={clothingItems}
+                onCardClick={handleCardClick}
+                addClothes={handleAddClothes}
+                handleEditProfile={handleEditProfile}
+                handleSignOut={handleSignOut}
+              />
+            </ProtectedRoute>
+            <Route path='/main'>
+              <Main
+                weatherData={weatherData}
+                cards={clothingItems}
+                onCardClick={handleCardClick}
+              />
+            </Route>
+            <Route path='/'>
+              {loggedIn ? <Redirect to='/profile' /> : <Redirect to='/main' />}
+            </Route>
+          </Switch>
+        </TemperatureContext.Provider>
+        <Footer />
+        {activeModal === "signup" && (
+          <ValidationContext.Provider
+            value={{
+              disableButton,
+              setDisableButton,
+              handleSubmitButtonChange,
+              closeActiveModal,
+              handleSignupSubmit,
+              setActiveModal,
+            }}
+          >
+            <RegisterModal isLoading={isLoading} />
+          </ValidationContext.Provider>
+        )}
+        {activeModal === "signin" && (
+          <ValidationContext.Provider
+            value={{
+              disableButton,
+              setDisableButton,
+              handleSubmitButtonChange,
+              closeActiveModal,
+              handleLoginSubmit,
+              setActiveModal,
+            }}
+          >
+            <LoginModal isLoading={isLoading} />
+          </ValidationContext.Provider>
+        )}
+        {activeModal === "edit" && (
+          <ValidationContext.Provider
+            value={{
+              disableButton,
+              setDisableButton,
+              handleSubmitButtonChange,
+              closeActiveModal,
+              handleUpdateSubmit,
+              setActiveModal,
+            }}
+          >
+            <EditProfileModal isLoading={isLoading} />
+          </ValidationContext.Provider>
+        )}
+        {activeModal === "create" && (
+          <ValidationContext.Provider
+            value={{
+              disableButton,
+              setDisableButton,
+              handleSubmitButtonChange,
+              closeActiveModal,
+              handleAddItemSubmit,
+            }}
+          >
+            <AddItemModal isLoading={isLoading} />
+          </ValidationContext.Provider>
+        )}
+        {activeModal === "preview" && (
+          <ItemModal
+            card={selectedCard}
+            onClose={closeActiveModal}
+            onDelete={handleConfirmDelete}
+          />
+        )}
+        {activeModal === "confirm" && (
+          <DeleteCardModal
+            onClose={closeActiveModal}
+            handleDelete={handleDeleteCard}
+            isLoading={isLoading}
+          />
+        )}
+      </CurrentUserContext.Provider>
     </div>
   );
 };

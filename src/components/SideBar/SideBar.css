@@ -10,4 +10,27 @@
 .sidebar__avatar {
   width: 56px;
   height: 56px;
+  border-radius: 100%;
+}
+
+.sidebar__link-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.sidebar__button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0;
+  margin: 0 0 0 68px;
+  font-size: 16px;
+  transition: 0.1s;
+}
+
+.sidebar__button:hover {
+  opacity: 0.6;
+  transform: scale(1.1, 1.1);
 }
