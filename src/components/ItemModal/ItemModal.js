@@ -1,6 +1,12 @@
 import "./ItemModal.css";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { useContext } from "react";
 
 function ItemModal({ card, onClose, onDelete }) {
+  const { currentUser } = useContext(CurrentUserContext);
+
+  const isOwn = card.owner === currentUser._id;
+
   return (
     <div className='modal modal__preview' onClick={onClose}>
       <div className='modal__container'>
@@ -8,9 +14,11 @@ function ItemModal({ card, onClose, onDelete }) {
         <img className='modal__image' src={card.imageUrl} alt='card' />
         <div className='modal__description-wrapper'>
           <p className='modal__description'>{card.name}</p>
-          <p className='modal__delete-link' onClick={onDelete}>
-            Delete Item
-          </p>
+          {isOwn && (
+            <p className='modal__delete-link' onClick={onDelete}>
+              Delete Item
+            </p>
+          )}
         </div>
         <p className='modal__description'>Weather: {card.weather}</p>
       </div>

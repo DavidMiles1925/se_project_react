@@ -4,7 +4,7 @@ import ToggleSwtich from "../ToggleSwitch/ToggleSwitch";
 import "./Header.css";
 
 const Header = ({
-  userData,
+  currentUser,
   weatherData,
   onAddClothes,
   onSignup,
@@ -48,8 +48,12 @@ const Header = ({
       )}
       {loggedIn && (
         <Link to='/profile' className='header__profile-link'>
-          <p className='header__username'>{userData.name}</p>
-          <img className='header__avatar' src={userData.avatar} alt='avatar' />
+          <p className='header__username'>{currentUser.name}</p>
+          <img
+            className='header__avatar'
+            src={currentUser.avatar}
+            alt='avatar'
+          />
         </Link>
       )}
     </header>

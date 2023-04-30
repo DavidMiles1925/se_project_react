@@ -7,7 +7,7 @@ function ModalWithForm({
   name,
   buttonText,
   handleSubmit,
-  buttonModifier,
+  alternateButton,
   children,
 }) {
   const { disableButton, closeActiveModal, setActiveModal } =
@@ -32,13 +32,13 @@ function ModalWithForm({
               >
                 {buttonText}
               </button>
-              {buttonModifier.value && (
+              {alternateButton.value && (
                 <button
                   className='modal__button-modifier'
                   type='button'
-                  onClick={() => setActiveModal(buttonModifier.path)}
+                  onClick={() => setActiveModal(alternateButton.path)}
                 >
-                  {buttonModifier.text}
+                  {alternateButton.text}
                 </button>
               )}
             </div>

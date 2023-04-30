@@ -1,5 +1,5 @@
-const baseUrl =
-  "https://my-json-server.typicode.com/DavidMiles1925/se_project_react";
+// const baseUrl = "https://my-json-server.typicode.com/DavidMiles1925/se_project_react";
+const baseUrl = "http://localhost:3001";
 
 const processServerResponse = (res) => {
   if (res.ok) {
@@ -21,24 +21,29 @@ function getCards() {
   });
 }
 
-function addCard(data) {
+function addCard(data, token) {
+  console.log(token);
   return request(`${baseUrl}/items`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify({
       id: data.id,
       name: data.name,
-      link: data.link,
+      imageUrl: data.link,
       weather: data.weather,
     }),
   });
 }
 
-function deleteCard(id) {
+function deleteCard(id, token) {
   return request(`${baseUrl}/items/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
     },
   });
 }

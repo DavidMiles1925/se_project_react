@@ -23,7 +23,7 @@ import EditProfileModal from "../EditProfileModal/EditProfileModal";
 import { getWeatherData, filterWeatherData } from "../../utils/weatherAPI";
 import { apiKey, lat, long } from "../../utils/constants";
 import { getCards, addCard, deleteCard } from "../../utils/api";
-import { checkToken, signin, signup } from "../../utils/auth";
+import { checkToken, signin, signup, updateUser } from "../../utils/auth";
 
 const App = () => {
   const [weatherData, setWeatherData] = useState({});
@@ -34,7 +34,7 @@ const App = () => {
   const [disableButton, setDisableButton] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userData, setUserData] = useState({});
+  const [currentUser, setCurrentUser] = useState({});
 
   const history = useHistory();
 
@@ -72,7 +72,7 @@ const App = () => {
         localStorage.setItem("token", res.token);
 
         checkToken(res.token).then((res) => {
-          setUserData(JSON.parse(JSON.stringify(res.data)));
+          setCurrentUser(JSON.parse(JSON.stringify(res.data)));
         });
 
         setLoggedIn(true);
@@ -89,19 +89,35 @@ const App = () => {
       });
   }
 
-  function handleUpdateSubmit() {
-    console.log("Update Submit");
+  function handleUpdateSubmit(name, avatar) {
+    setIsLoading(true);
+
+    const token = localStorage.getItem("token");
+    const data = { name, avatar, token };
+
+    updateUser(data)
+      .then((res) => {
+        console.log("res: ", res);
+        setCurrentUser(res.data);
+        closeModal();
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(`Error: ${err.status}`);
+        setIsLoading(false);
+      });
   }
 
   function handleAddItemSubmit(name, link, weather) {
     setIsLoading(true);
 
-    const id = clothingItems.length + 1;
-    const item = { id, name, weather, link };
+    const _id = clothingItems.length + 1;
+    const item = { _id, name, weather, link };
 
-    addCard(item)
-      .then(() => {
-        setClothingItems([item, ...clothingItems]);
+    addCard(item, getLocalToken())
+      .then((res) => {
+        setClothingItems([res.data, ...clothingItems]);
+        console.log(res.data);
         closeModal();
         setIsLoading(false);
       })
@@ -113,10 +129,10 @@ const App = () => {
   function handleDeleteCard() {
     setIsLoading(true);
 
-    deleteCard(selectedCard.id)
+    deleteCard(selectedCard._id, getLocalToken())
       .then(() => {
         setClothingItems(
-          clothingItems.filter((item) => item.id !== selectedCard.id)
+          clothingItems.filter((item) => item._id !== selectedCard._id)
         );
         closeModal();
         setIsLoading(false);
@@ -171,20 +187,29 @@ const App = () => {
     setActiveModal(null);
   }
 
+  function getLocalToken() {
+    try {
+      const jwt = localStorage.getItem("token");
+      return jwt;
+    } catch {
+      return null;
+    }
+  }
+
   function checkAccess() {
-    const jwt = localStorage.getItem("token");
+    const jwt = getLocalToken();
 
     if (jwt) {
       checkToken(jwt)
         .then((res) => {
-          setUserData(JSON.parse(JSON.stringify(res.data)));
+          setCurrentUser(JSON.parse(JSON.stringify(res.data)));
           setLoggedIn(true);
         })
         .catch((err) => {
           console.log("No token found ", err.message);
         });
     } else {
-      console.log("no jwt");
+      console.log("No JWT found");
     }
   }
 
@@ -234,7 +259,7 @@ const App = () => {
 
   return (
     <div className='App'>
-      <CurrentUserContext.Provider value={{ userData }}>
+      <CurrentUserContext.Provider value={{ currentUser }}>
         <TemperatureContext.Provider
           value={{
             currentTemperatureUnit,
@@ -243,7 +268,7 @@ const App = () => {
           }}
         >
           <Header
-            userData={userData}
+            currentUser={currentUser}
             weatherData={weatherData}
             onAddClothes={handleAddClothes}
             onSignup={handleSignup}
@@ -253,7 +278,7 @@ const App = () => {
           <Switch>
             <ProtectedRoute path='/profile' loggedIn={loggedIn}>
               <Profile
-                userData={userData}
+                currentUser={currentUser}
                 cards={clothingItems}
                 onCardClick={handleCardClick}
                 addClothes={handleAddClothes}

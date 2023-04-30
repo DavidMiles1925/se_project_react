@@ -4,8 +4,6 @@ const processServerResponse = (res) => {
   if (res.ok) {
     return res.json();
   }
-
-  console.log(`Error: ${res.status}`);
   return Promise.reject(`Error: ${res.status}`);
 };
 
@@ -46,4 +44,16 @@ function checkToken(token) {
   });
 }
 
-export { signup, signin, checkToken };
+function updateUser(data) {
+  const { name, avatar, token } = data;
+  return request(`${baseUrl}/users/me`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ name, avatar }),
+  });
+}
+
+export { signup, signin, checkToken, updateUser };

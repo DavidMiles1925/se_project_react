@@ -3,6 +3,16 @@ import { configValidate } from "../utils/constants";
 
 const ValidationContext = createContext();
 
+function checkInputValidity(e) {
+  if (e.target.checkValidity()) {
+    hideInputError(e.target);
+    return true;
+  } else {
+    showInputError(e.target, e.target.validationMessage);
+    return false;
+  }
+}
+
 function showInputError(inputElement, errorMessage) {
   const errorElement = document.querySelector(`.${inputElement.id}__error`);
   inputElement.classList.add(configValidate.inputErrorClass);
@@ -17,4 +27,9 @@ function hideInputError(inputElement) {
   errorElement.textContent = "";
 }
 
-export { ValidationContext, showInputError, hideInputError };
+export {
+  ValidationContext,
+  showInputError,
+  hideInputError,
+  checkInputValidity,
+};

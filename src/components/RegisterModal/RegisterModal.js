@@ -1,8 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import {
   ValidationContext,
-  showInputError,
-  hideInputError,
+  checkInputValidity,
 } from "../../contexts/ValidationContext";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
@@ -36,16 +35,6 @@ function RegisterModal({ isLoading }) {
     setAvatarState({ valid: false, value: "" });
   }, []);
 
-  function checkInputValidity(e) {
-    if (e.target.checkValidity()) {
-      hideInputError(e.target);
-      return true;
-    } else {
-      showInputError(e.target, e.target.validationMessage);
-      return false;
-    }
-  }
-
   function handleEmailChange(e) {
     setEmailState({ valid: checkInputValidity(e), value: e.target.value });
   }
@@ -78,7 +67,7 @@ function RegisterModal({ isLoading }) {
       name='signup'
       buttonText={isLoading ? "Saving..." : "Signup"}
       handleSubmit={handleSubmit}
-      buttonModifier={{ value: true, text: " or Log In", path: "signin" }}
+      alternateButton={{ value: true, text: " or Log In", path: "signin" }}
     >
       <label className='modal__label'>Email*</label>
       <input

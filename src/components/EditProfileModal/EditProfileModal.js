@@ -1,20 +1,41 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import { ValidationContext } from "../../contexts/ValidationContext";
+import {
+  ValidationContext,
+  checkInputValidity,
+} from "../../contexts/ValidationContext";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
 function EditProfileModal({ isLoading }) {
-  const { userData } = useContext(CurrentUserContext);
+  const { currentUser } = useContext(CurrentUserContext);
   const { setDisableButton, handleUpdateSubmit } =
     useContext(ValidationContext);
 
-  const [nameState, setNameState] = useState(userData.name);
-  const [avatarState, setAvatarState] = useState(userData.avatar);
+  const [nameState, setNameState] = useState({
+    valid: true,
+    value: currentUser.name,
+  });
+  const [avatarState, setAvatarState] = useState({
+    valid: true,
+    value: currentUser.avatar,
+  });
+
+  function handleNameChange(e) {
+    setNameState({ valid: checkInputValidity(e), value: e.target.value });
+  }
+
+  function handleAvatarChange(e) {
+    setAvatarState({ valid: checkInputValidity(e), value: e.target.value });
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleUpdateSubmit();
+    handleUpdateSubmit(nameState.value, avatarState.value);
   }
+
+  useEffect(() => {
+    setDisableButton(!(nameState.valid && avatarState.valid));
+  }, [nameState, avatarState, setDisableButton]);
 
   return (
     <ModalWithForm
@@ -22,8 +43,36 @@ function EditProfileModal({ isLoading }) {
       name='edit'
       buttonText={isLoading ? "Saving..." : "Save"}
       handleSubmit={handleSubmit}
-      buttonModifier={{ value: true, text: " or Cancel", path: null }}
-    ></ModalWithForm>
+      alternateButton={{ value: true, text: " or Cancel", path: null }}
+    >
+      <label className='modal__label'>Name</label>
+      <input
+        className='modal__input modal__input_type_text'
+        type='text'
+        name='name'
+        id='name'
+        placeholder='Name'
+        required
+        minLength='1'
+        maxLength='30'
+        value={nameState.value}
+        onChange={handleNameChange}
+      />
+      <span className='modal__error name__error' id='name-error'></span>
+
+      <label className='modal__label'>Avatar URL</label>
+      <input
+        className='modal__input modal__input_type_text'
+        type='url'
+        name='avatar'
+        id='avatar'
+        placeholder='Avatar URL'
+        required
+        value={avatarState.value}
+        onChange={handleAvatarChange}
+      />
+      <span className='modal__error avatar__error' id='avatar-error'></span>
+    </ModalWithForm>
   );
 }
 

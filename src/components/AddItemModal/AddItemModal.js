@@ -1,8 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import {
   ValidationContext,
-  showInputError,
-  hideInputError,
+  checkInputValidity,
 } from "../../contexts/ValidationContext";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
@@ -18,16 +17,6 @@ function AddItemModal({ isLoading }) {
     value: "",
   });
   const [weatherState, setWeatherState] = useState("");
-
-  function checkInputValidity(e) {
-    if (e.target.checkValidity()) {
-      hideInputError(e.target);
-      return true;
-    } else {
-      showInputError(e.target, e.target.validationMessage);
-      return false;
-    }
-  }
 
   function handleNameChange(e) {
     setNameState({ valid: checkInputValidity(e), value: e.target.value });
@@ -65,7 +54,7 @@ function AddItemModal({ isLoading }) {
       name='new-card'
       buttonText={isLoading ? "Saving..." : "Save"}
       handleSubmit={handleSubmit}
-      buttonModifier={{ value: false, text: "", path: "" }}
+      alternateButton={{ value: false, text: "", path: "" }}
     >
       <label className='modal__label'>Name</label>
       <input
