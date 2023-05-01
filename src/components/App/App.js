@@ -5,7 +5,10 @@ import {
   useHistory,
 } from "react-router-dom/cjs/react-router-dom.min";
 import { TemperatureContext } from "../../contexts/TemperatureContext";
-import { ValidationContext } from "../../contexts/ValidationContext";
+import {
+  ValidationContext,
+  errorMessageHandler,
+} from "../../contexts/ValidationContext";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import "./App.css";
 import "../../fonts/fonts.css";
@@ -35,6 +38,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
+  const [errorDisplay, setErrorDisplay] = useState({});
 
   const history = useHistory();
 
@@ -54,11 +58,8 @@ const App = () => {
         setIsLoading(false);
       })
       .catch((err) => {
-        if (err === "Error: 409") {
-          alert("This user already exists, please use a unique email address.");
-        }
+        handleModalErrorDisplay(true, errorMessageHandler(err));
         setIsLoading(false);
-        console.log(err);
       });
   }
 
@@ -81,11 +82,8 @@ const App = () => {
         setIsLoading(false);
       })
       .catch((err) => {
-        if (err === "Error: 401") {
-          alert("Invalid username or password.");
-        }
+        handleModalErrorDisplay(true, errorMessageHandler(err));
         setIsLoading(false);
-        console.log(err);
       });
   }
 
@@ -97,13 +95,12 @@ const App = () => {
 
     updateUser(data)
       .then((res) => {
-        console.log("res: ", res);
         setCurrentUser(res.data);
         closeModal();
         setIsLoading(false);
       })
       .catch((err) => {
-        console.log(`Error: ${err.status}`);
+        handleModalErrorDisplay(true, errorMessageHandler(err));
         setIsLoading(false);
       });
   }
@@ -117,12 +114,12 @@ const App = () => {
     addCard(item, getLocalToken())
       .then((res) => {
         setClothingItems([res.data, ...clothingItems]);
-        console.log(res.data);
         closeModal();
         setIsLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        handleModalErrorDisplay(true, errorMessageHandler(err));
+        setIsLoading(false);
       });
   }
 
@@ -180,11 +177,13 @@ const App = () => {
       evt.target.classList.contains("modal__cancel")
     ) {
       setActiveModal();
+      handleModalErrorDisplay(false, "");
     }
   }
 
   function closeModal() {
     setActiveModal(null);
+    handleModalErrorDisplay(false, "");
   }
 
   function getLocalToken() {
@@ -207,16 +206,20 @@ const App = () => {
         })
         .catch((err) => {
           console.log("No token found ", err.message);
+          handleModalErrorDisplay(true, errorMessageHandler(err));
         });
-    } else {
-      console.log("No JWT found");
     }
   }
 
   function handleSignOut() {
     setLoggedIn(false);
     localStorage.removeItem("token");
+    setCurrentUser({});
     history.push("/");
+  }
+
+  function handleModalErrorDisplay(value, message) {
+    setErrorDisplay({ value, message });
   }
 
   useEffect(() => {
@@ -303,11 +306,13 @@ const App = () => {
           <ValidationContext.Provider
             value={{
               disableButton,
+              errorDisplay,
               setDisableButton,
               handleSubmitButtonChange,
               closeActiveModal,
               handleSignupSubmit,
               setActiveModal,
+              handleModalErrorDisplay,
             }}
           >
             <RegisterModal isLoading={isLoading} />
@@ -317,11 +322,13 @@ const App = () => {
           <ValidationContext.Provider
             value={{
               disableButton,
+              errorDisplay,
               setDisableButton,
               handleSubmitButtonChange,
               closeActiveModal,
               handleLoginSubmit,
               setActiveModal,
+              handleModalErrorDisplay,
             }}
           >
             <LoginModal isLoading={isLoading} />
@@ -331,11 +338,13 @@ const App = () => {
           <ValidationContext.Provider
             value={{
               disableButton,
+              errorDisplay,
               setDisableButton,
               handleSubmitButtonChange,
               closeActiveModal,
               handleUpdateSubmit,
               setActiveModal,
+              handleModalErrorDisplay,
             }}
           >
             <EditProfileModal isLoading={isLoading} />
@@ -345,10 +354,12 @@ const App = () => {
           <ValidationContext.Provider
             value={{
               disableButton,
+              errorDisplay,
               setDisableButton,
               handleSubmitButtonChange,
               closeActiveModal,
               handleAddItemSubmit,
+              handleModalErrorDisplay,
             }}
           >
             <AddItemModal isLoading={isLoading} />

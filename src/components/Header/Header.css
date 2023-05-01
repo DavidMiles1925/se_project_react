@@ -1,3 +1,11 @@
+.logo {
+  transition: 0.1s;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
 .header {
   max-width: 1440px;
   width: 96%;
@@ -23,11 +31,13 @@
   line-height: 24px;
   font-weight: bold;
   margin: 0 8px 0;
+  transition: 0.1s;
 }
 
 .header__button:hover {
   color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
+  transform: scale(1.05);
 }
 
 .header__username {
@@ -47,6 +57,11 @@
   font-weight: bold;
   text-decoration: none;
   color: black;
+  transition: 0.1s;
+}
+
+.header__profile-link:hover {
+  transform: scale(1.05);
 }
 
 .header__avatar {

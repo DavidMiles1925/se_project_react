@@ -10,8 +10,13 @@ function ModalWithForm({
   alternateButton,
   children,
 }) {
-  const { disableButton, closeActiveModal, setActiveModal } =
-    useContext(ValidationContext);
+  const {
+    disableButton,
+    closeActiveModal,
+    setActiveModal,
+    errorDisplay,
+    handleModalErrorDisplay,
+  } = useContext(ValidationContext);
 
   return (
     <div className={`modal modal_type_${name}`} onMouseDown={closeActiveModal}>
@@ -36,10 +41,16 @@ function ModalWithForm({
                 <button
                   className='modal__button-modifier'
                   type='button'
-                  onClick={() => setActiveModal(alternateButton.path)}
+                  onClick={() => {
+                    setActiveModal(alternateButton.path);
+                    handleModalErrorDisplay(false, "");
+                  }}
                 >
                   {alternateButton.text}
                 </button>
+              )}
+              {errorDisplay.value && (
+                <p className='modal__error_visible'>{errorDisplay.message}</p>
               )}
             </div>
           </fieldset>

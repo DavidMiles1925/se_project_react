@@ -14,8 +14,6 @@ function getWeatherData(lat, long, authToken) {
     if (res.ok) {
       return res.json();
     }
-
-    console.log(`Error: ${res.status}`);
     return Promise.reject(`Error: ${res.status}`);
   });
 }

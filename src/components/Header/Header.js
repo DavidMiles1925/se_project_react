@@ -40,7 +40,7 @@ const Header = ({
       )}
       {!loggedIn && (
         <button
-          className='header__button header__button_type_signup'
+          className='header__button header__button_type_signin'
           onClick={onSignin}
         >
           Log In

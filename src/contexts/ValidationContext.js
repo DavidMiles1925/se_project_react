@@ -27,9 +27,26 @@ function hideInputError(inputElement) {
   errorElement.textContent = "";
 }
 
+function errorMessageHandler(err) {
+  if (err === "Error: 400") {
+    return "Validation Error";
+  } else if (err === "Error: 401") {
+    return "Invalid username or password.";
+  } else if (err === "Error: 403") {
+    return "Forbidden";
+  } else if (err === "Error: 404") {
+    return "Not Found";
+  } else if (err === "Error: 409") {
+    return "This user already exists, please use a unique email address.";
+  } else {
+    return "Something went wrong.";
+  }
+}
+
 export {
   ValidationContext,
   showInputError,
   hideInputError,
   checkInputValidity,
+  errorMessageHandler,
 };

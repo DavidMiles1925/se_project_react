@@ -5,8 +5,6 @@ const processServerResponse = (res) => {
   if (res.ok) {
     return res.json();
   }
-
-  console.log(`Error: ${res.status}`);
   return Promise.reject(`Error: ${res.status}`);
 };
 
@@ -22,7 +20,6 @@ function getCards() {
 }
 
 function addCard(data, token) {
-  console.log(token);
   return request(`${baseUrl}/items`, {
     method: "POST",
     headers: {
