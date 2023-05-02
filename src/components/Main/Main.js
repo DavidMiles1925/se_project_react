@@ -5,7 +5,7 @@ import ItemCard from "../ItemCard/ItemCard";
 import { convertTemp, weatherTemp } from "../../utils/tempLogic";
 import "./Main.css";
 
-function Main({ weatherData, cards, onCardClick }) {
+function Main({ weatherData, cards, onCardClick, handleLikeCard }) {
   const { currentTemperatureUnit } = useContext(TemperatureContext);
   const deg = convertTemp(weatherData.temp, currentTemperatureUnit);
   const weatherType = weatherTemp(weatherData.temp);
@@ -31,6 +31,7 @@ function Main({ weatherData, cards, onCardClick }) {
                 key={filteredCard._id}
                 card={filteredCard}
                 onCardClick={onCardClick}
+                handleLikeCard={handleLikeCard}
               />
             ))}
         </ul>

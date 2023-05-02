@@ -17,14 +17,36 @@
   cursor: pointer;
 }
 
+.card__image {
+  max-width: 226px;
+}
+
+.card__header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .card__name {
   border: 1px solid black;
   background-color: white;
   padding: 2px 12px;
 }
 
-.card__image {
-  max-width: 226px;
+.card__like-button {
+  width: 18px;
+  height: 15px;
+  background-size: contain;
+  background-color: transparent;
+  background-image: url("../../images/heart.svg");
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.card__like-button_active {
+  background-image: url("../../images/heart-active.svg");
 }
 
 @media screen and (max-width: 450px) {

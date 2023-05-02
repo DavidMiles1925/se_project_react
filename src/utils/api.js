@@ -45,4 +45,24 @@ function deleteCard(id, token) {
   });
 }
 
-export { getCards, addCard, deleteCard };
+function likeCard(id, token) {
+  return request(`${baseUrl}/items/${id}/likes`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "Application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+function unlikeCard(id, token) {
+  return request(`${baseUrl}/items/${id}/likes`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "Application/json",
+      authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+export { getCards, addCard, deleteCard, likeCard, unlikeCard };

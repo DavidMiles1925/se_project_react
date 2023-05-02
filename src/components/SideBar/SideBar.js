@@ -3,16 +3,21 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { useContext } from "react";
 
 function SideBar({ handleEditProfile, handleSignOut }) {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser, alternateAvatar } = useContext(CurrentUserContext);
 
   return (
     <>
       <div className='sidebar__info'>
-        <img
-          className='sidebar__avatar'
-          src={currentUser.avatar}
-          alt='avatar'
-        />
+        {currentUser.avatar !==
+        "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/Elise.png?etag=0807a449ad64b18fe7cd94781c622e6d" ? (
+          <img
+            className='sidebar__avatar'
+            src={currentUser.avatar}
+            alt='avatar'
+          />
+        ) : (
+          <p className='sidebar__default-avatar'>{alternateAvatar}</p>
+        )}
         <p className='sidebar__username'>{currentUser.name}</p>
       </div>
       <div className='sidebar__link-container'>

@@ -3,7 +3,7 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import ItemCard from "../ItemCard/ItemCard";
 import "./ClothesSection.css";
 
-function ClothesSection({ cards, onCardClick, addClothes }) {
+function ClothesSection({ cards, onCardClick, addClothes, handleLikeCard }) {
   const { currentUser } = useContext(CurrentUserContext);
 
   return (
@@ -22,6 +22,7 @@ function ClothesSection({ cards, onCardClick, addClothes }) {
               key={filteredCard._id}
               card={filteredCard}
               onCardClick={onCardClick}
+              handleLikeCard={handleLikeCard}
             />
           ))}
       </ul>

@@ -4,6 +4,7 @@ import {
   checkInputValidity,
 } from "../../contexts/ValidationContext";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import "../ModalWithForm/ModalWithForm.css";
 
 function LoginModal({ isLoading }) {
   const { setDisableButton, handleLoginSubmit } = useContext(ValidationContext);

@@ -4,6 +4,7 @@ import {
   checkInputValidity,
 } from "../../contexts/ValidationContext";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import "../ModalWithForm/ModalWithForm.css";
 
 function RegisterModal({ isLoading }) {
   const { setDisableButton, handleSignupSubmit } =
@@ -18,15 +19,8 @@ function RegisterModal({ isLoading }) {
   const [avatarState, setAvatarState] = useState({ valid: false, value: "" });
 
   useEffect(() => {
-    setDisableButton(
-      !(
-        emailState.valid &&
-        passwordState.valid &&
-        nameState.valid &&
-        avatarState.valid
-      )
-    );
-  }, [emailState, passwordState, nameState, avatarState, setDisableButton]);
+    setDisableButton(!(emailState.valid && passwordState.valid));
+  }, [emailState, passwordState, setDisableButton]);
 
   useEffect(() => {
     setEmailState({ valid: false, value: "" });
@@ -106,8 +100,6 @@ function RegisterModal({ isLoading }) {
         name='name'
         id='name'
         placeholder='Name'
-        required
-        minLength='1'
         maxLength='30'
         value={nameState.value}
         onChange={handleNameChange}
@@ -121,7 +113,6 @@ function RegisterModal({ isLoading }) {
         name='avatar'
         id='avatar'
         placeholder='Avatar URL'
-        required
         value={avatarState.value}
         onChange={handleAvatarChange}
       />

@@ -34,3 +34,15 @@
   opacity: 0.6;
   transform: scale(1.1, 1.1);
 }
+
+.sidebar__default-avatar {
+  display: flex;
+  height: 56px;
+  width: 56px;
+  border-radius: 100%;
+  background-color: blue;
+  color: white;
+  font-size: 28px;
+  justify-content: center;
+  align-items: center;
+}

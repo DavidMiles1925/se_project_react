@@ -1,16 +1,13 @@
 import { Link } from "react-router-dom";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import logo from "../../images/logo.svg";
 import ToggleSwtich from "../ToggleSwitch/ToggleSwitch";
 import "./Header.css";
+import { useContext } from "react";
 
-const Header = ({
-  currentUser,
-  weatherData,
-  onAddClothes,
-  onSignup,
-  onSignin,
-  loggedIn,
-}) => {
+const Header = ({ weatherData, onAddClothes, onSignup, onSignin }) => {
+  const { isLoggedIn, currentUser, alternateAvatar } =
+    useContext(CurrentUserContext);
   const currentDate = new Date().toLocaleString("default", {
     month: "long",
     day: "numeric",
@@ -25,7 +22,7 @@ const Header = ({
         {currentDate}, {weatherData.city}
       </p>
       <ToggleSwtich />
-      {!loggedIn && (
+      {!isLoggedIn && (
         <button
           className='header__button header__button_type_signup'
           onClick={onSignup}
@@ -33,12 +30,12 @@ const Header = ({
           Sign Up
         </button>
       )}
-      {loggedIn && (
+      {isLoggedIn && (
         <button className='header__button' onClick={onAddClothes}>
           + Add Clothes
         </button>
       )}
-      {!loggedIn && (
+      {!isLoggedIn && (
         <button
           className='header__button header__button_type_signin'
           onClick={onSignin}
@@ -46,14 +43,19 @@ const Header = ({
           Log In
         </button>
       )}
-      {loggedIn && (
+      {isLoggedIn && (
         <Link to='/profile' className='header__profile-link'>
           <p className='header__username'>{currentUser.name}</p>
-          <img
-            className='header__avatar'
-            src={currentUser.avatar}
-            alt='avatar'
-          />
+          {currentUser.avatar !==
+          "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/Elise.png?etag=0807a449ad64b18fe7cd94781c622e6d" ? (
+            <img
+              className='header__avatar'
+              src={currentUser.avatar}
+              alt='avatar'
+            />
+          ) : (
+            <p className='header__default-avatar'>{alternateAvatar}</p>
+          )}
         </Link>
       )}
     </header>

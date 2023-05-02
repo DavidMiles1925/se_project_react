@@ -5,6 +5,7 @@ import {
   checkInputValidity,
 } from "../../contexts/ValidationContext";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import "../ModalWithForm/ModalWithForm.css";
 
 function EditProfileModal({ isLoading }) {
   const { currentUser } = useContext(CurrentUserContext);

@@ -9,6 +9,7 @@ function Profile({
   addClothes,
   handleEditProfile,
   handleSignOut,
+  handleLikeCard,
 }) {
   return (
     <div className='profile'>
@@ -23,6 +24,7 @@ function Profile({
           cards={cards}
           onCardClick={onCardClick}
           addClothes={addClothes}
+          handleLikeCard={handleLikeCard}
         />
       </div>
     </div>

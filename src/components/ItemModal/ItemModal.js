@@ -21,6 +21,7 @@ function ItemModal({ card, onClose, onDelete }) {
           )}
         </div>
         <p className='modal__description'>Weather: {card.weather}</p>
+        <p className='modal__description'>Likes: {card.likes.length}</p>
       </div>
     </div>
   );

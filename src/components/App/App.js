@@ -25,7 +25,13 @@ import LoginModal from "../LoginModal/LoginModal";
 import EditProfileModal from "../EditProfileModal/EditProfileModal";
 import { getWeatherData, filterWeatherData } from "../../utils/weatherAPI";
 import { apiKey, lat, long } from "../../utils/constants";
-import { getCards, addCard, deleteCard } from "../../utils/api";
+import {
+  getCards,
+  addCard,
+  deleteCard,
+  likeCard,
+  unlikeCard,
+} from "../../utils/api";
 import { checkToken, signin, signup, updateUser } from "../../utils/auth";
 
 const App = () => {
@@ -36,11 +42,17 @@ const App = () => {
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [disableButton, setDisableButton] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
+  const [alternateAvatar, setAlternateAvatar] = useState("");
   const [errorDisplay, setErrorDisplay] = useState({});
 
   const history = useHistory();
+
+  function getUserFirstLetter(name) {
+    const firstletter = name.slice(0, 1);
+    return firstletter;
+  }
 
   function handleSubmitButtonChange() {
     setDisableButton(!disableButton);
@@ -74,11 +86,11 @@ const App = () => {
 
         checkToken(res.token).then((res) => {
           setCurrentUser(JSON.parse(JSON.stringify(res.data)));
+          setAlternateAvatar(getUserFirstLetter(res.data.name));
+          setIsLoggedIn(true);
+          history.push("/");
         });
-
-        setLoggedIn(true);
         closeModal();
-        history.push("/");
         setIsLoading(false);
       })
       .catch((err) => {
@@ -121,6 +133,28 @@ const App = () => {
         handleModalErrorDisplay(true, errorMessageHandler(err));
         setIsLoading(false);
       });
+  }
+
+  function handleLikeCard(id, liked) {
+    const token = localStorage.getItem("token");
+
+    if (!liked) {
+      likeCard(id, token)
+        .then((updatedCard) => {
+          setClothingItems((cards) =>
+            cards.map((c) => (c._id === id ? updatedCard.data : c))
+          );
+        })
+        .catch((err) => console.log(errorMessageHandler(err)));
+    } else {
+      unlikeCard(id, token)
+        .then((updatedCard) => {
+          setClothingItems((cards) =>
+            cards.map((c) => (c._id === id ? updatedCard.data : c))
+          );
+        })
+        .catch((err) => console.log(errorMessageHandler(err)));
+    }
   }
 
   function handleDeleteCard() {
@@ -202,7 +236,9 @@ const App = () => {
       checkToken(jwt)
         .then((res) => {
           setCurrentUser(JSON.parse(JSON.stringify(res.data)));
-          setLoggedIn(true);
+          setAlternateAvatar(getUserFirstLetter(res.data.name));
+          setIsLoggedIn(true);
+          history.push("/");
         })
         .catch((err) => {
           console.log("No token found ", err.message);
@@ -212,9 +248,10 @@ const App = () => {
   }
 
   function handleSignOut() {
-    setLoggedIn(false);
     localStorage.removeItem("token");
     setCurrentUser({});
+    setAlternateAvatar("");
+    setIsLoggedIn(false);
     history.push("/");
   }
 
@@ -230,7 +267,7 @@ const App = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [loggedIn]);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (lat && long) {
@@ -262,7 +299,9 @@ const App = () => {
 
   return (
     <div className='App'>
-      <CurrentUserContext.Provider value={{ currentUser }}>
+      <CurrentUserContext.Provider
+        value={{ isLoggedIn, currentUser, alternateAvatar }}
+      >
         <TemperatureContext.Provider
           value={{
             currentTemperatureUnit,
@@ -271,22 +310,20 @@ const App = () => {
           }}
         >
           <Header
-            currentUser={currentUser}
             weatherData={weatherData}
             onAddClothes={handleAddClothes}
             onSignup={handleSignup}
             onSignin={handleSignin}
-            loggedIn={loggedIn}
           />
           <Switch>
-            <ProtectedRoute path='/profile' loggedIn={loggedIn}>
+            <ProtectedRoute path='/profile'>
               <Profile
-                currentUser={currentUser}
                 cards={clothingItems}
                 onCardClick={handleCardClick}
                 addClothes={handleAddClothes}
                 handleEditProfile={handleEditProfile}
                 handleSignOut={handleSignOut}
+                handleLikeCard={handleLikeCard}
               />
             </ProtectedRoute>
             <Route path='/main'>
@@ -294,10 +331,15 @@ const App = () => {
                 weatherData={weatherData}
                 cards={clothingItems}
                 onCardClick={handleCardClick}
+                handleLikeCard={handleLikeCard}
               />
             </Route>
             <Route path='/'>
-              {loggedIn ? <Redirect to='/profile' /> : <Redirect to='/main' />}
+              {isLoggedIn ? (
+                <Redirect to='/profile' />
+              ) : (
+                <Redirect to='/main' />
+              )}
             </Route>
           </Switch>
         </TemperatureContext.Provider>
