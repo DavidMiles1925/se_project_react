@@ -14,6 +14,8 @@ function errorMessageHandler(err) {
     return "Not Found";
   } else if (err === "Error: 409") {
     return "This user already exists, please use a unique email address.";
+  } else if (err.name === "TypeError") {
+    return "Could not connect to server.";
   } else {
     return "Something went wrong.";
   }

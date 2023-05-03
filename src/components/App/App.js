@@ -94,7 +94,9 @@ const App = () => {
       .catch((err) => {
         handleModalErrorDisplay(true, errorMessageHandler(err));
       })
-      .finally(setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   function handleUpdateSubmit({ name, avatar }) {
