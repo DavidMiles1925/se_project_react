@@ -25,6 +25,7 @@ export function useFormAndValidation() {
     setValues({ ...values, [name]: value });
     setErrors({ ...errors, [name]: e.target.validationMessage });
     setIsValid(e.target.closest("form").checkValidity());
+    console.log(values);
 
     if (e.target.checkValidity()) {
       hideInputError(e.target);

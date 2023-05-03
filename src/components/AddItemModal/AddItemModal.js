@@ -43,7 +43,7 @@ function AddItemModal({ isLoading }) {
         value={values.name}
         onChange={handleChange}
       />
-      <span className='modal__error name__error' id='name-error'></span>
+      <span className='modal__error name__error' id='name_error'></span>
       <label className='modal__label'>Link</label>
       <input
         className='modal__input modal__input_type_text'
@@ -62,7 +62,7 @@ function AddItemModal({ isLoading }) {
           <input
             className='modal__input modal__input_type_radio'
             type='radio'
-            name='weatherType'
+            name='weather'
             id='choiceHot'
             value='hot'
             onChange={handleChange}
@@ -75,7 +75,7 @@ function AddItemModal({ isLoading }) {
           <input
             className='modal__input modal__input_type_radio'
             type='radio'
-            name='weatherType'
+            name='weather'
             id='choiceWarm'
             value='warm'
             onChange={handleChange}
@@ -88,7 +88,7 @@ function AddItemModal({ isLoading }) {
           <input
             className='modal__input modal__input_type_radio'
             type='radio'
-            name='weatherType'
+            name='weather'
             id='choiceCold'
             value='cold'
             onChange={handleChange}

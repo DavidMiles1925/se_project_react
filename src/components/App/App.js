@@ -90,12 +90,11 @@ const App = () => {
           history.push("/");
         });
         closeModal();
-        setIsLoading(false);
       })
       .catch((err) => {
         handleModalErrorDisplay(true, errorMessageHandler(err));
-        setIsLoading(false);
-      });
+      })
+      .finally(setIsLoading(false));
   }
 
   function handleUpdateSubmit({ name, avatar }) {
@@ -108,30 +107,27 @@ const App = () => {
       .then((res) => {
         setCurrentUser(res.data);
         closeModal();
-        setIsLoading(false);
       })
       .catch((err) => {
         handleModalErrorDisplay(true, errorMessageHandler(err));
-        setIsLoading(false);
-      });
+      })
+      .finally(setIsLoading(false));
   }
 
   function handleAddItemSubmit({ name, link, weather }) {
     setIsLoading(true);
 
-    const _id = clothingItems.length + 1;
-    const item = { _id, name, weather, link };
+    const item = { name, weather, link };
 
     addCard(item, getLocalToken())
       .then((res) => {
         setClothingItems([res.data, ...clothingItems]);
         closeModal();
-        setIsLoading(false);
       })
       .catch((err) => {
         handleModalErrorDisplay(true, errorMessageHandler(err));
-        setIsLoading(false);
-      });
+      })
+      .finally(setIsLoading(false));
   }
 
   function handleLikeCard(id, liked) {
