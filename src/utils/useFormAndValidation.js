@@ -25,14 +25,6 @@ export function useFormAndValidation() {
     setValues({ ...values, [name]: value });
     setErrors({ ...errors, [name]: e.target.validationMessage });
     setIsValid(e.target.closest("form").checkValidity());
-
-    if (e.target.checkValidity()) {
-      hideInputError(e.target);
-      return true;
-    } else {
-      showInputError(e.target, e.target.validationMessage);
-      return false;
-    }
   };
 
   const resetForm = useCallback(

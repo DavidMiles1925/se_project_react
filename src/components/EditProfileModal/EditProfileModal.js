@@ -10,7 +10,8 @@ function EditProfileModal({ isLoading }) {
   const { setDisableButton, handleUpdateSubmit } =
     useContext(ValidationContext);
 
-  const { values, handleChange, isValid, setValues } = useFormAndValidation();
+  const { values, handleChange, errors, isValid, setValues } =
+    useFormAndValidation();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -43,10 +44,12 @@ function EditProfileModal({ isLoading }) {
         required
         minLength='1'
         maxLength='30'
-        value={values.name}
+        value={values.name || ""}
         onChange={handleChange}
       />
-      <span className='modal__error name__error' id='name-error'></span>
+      <span className='modal__error name__error' id='name-error'>
+        {errors.name}
+      </span>
 
       <label className='modal__label'>Avatar URL</label>
       <input
@@ -56,10 +59,12 @@ function EditProfileModal({ isLoading }) {
         id='avatar'
         placeholder='Avatar URL'
         required
-        value={values.avatar}
+        value={values.avatar || ""}
         onChange={handleChange}
       />
-      <span className='modal__error avatar__error' id='avatar-error'></span>
+      <span className='modal__error avatar__error' id='avatar-error'>
+        {errors.avatar}
+      </span>
     </ModalWithForm>
   );
 }

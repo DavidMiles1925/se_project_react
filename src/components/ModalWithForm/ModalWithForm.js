@@ -50,7 +50,7 @@ function ModalWithForm({
                 </button>
               )}
               {errorDisplay.value && (
-                <p className='modal__error_visible'>{errorDisplay.message}</p>
+                <p className='modal__error'>{errorDisplay.message}</p>
               )}
             </div>
           </fieldset>

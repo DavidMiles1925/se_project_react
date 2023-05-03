@@ -8,7 +8,8 @@ function RegisterModal({ isLoading }) {
   const { setDisableButton, handleSignupSubmit } =
     useContext(ValidationContext);
 
-  const { values, handleChange, isValid, resetForm } = useFormAndValidation();
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormAndValidation();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -41,10 +42,12 @@ function RegisterModal({ isLoading }) {
         required
         minLength='1'
         maxLength='30'
-        value={values.email}
+        value={values.email || ""}
         onChange={handleChange}
       />
-      <span className='modal__error email__error' id='email-error'></span>
+      <span className='modal__error email__error' id='email-error'>
+        {errors.email}
+      </span>
 
       <label className='modal__label'>Password*</label>
       <input
@@ -56,10 +59,12 @@ function RegisterModal({ isLoading }) {
         required
         minLength='8'
         maxLength='30'
-        value={values.password}
+        value={values.password || ""}
         onChange={handleChange}
       />
-      <span className='modal__error password__error' id='password-error'></span>
+      <span className='modal__error password__error' id='password-error'>
+        {errors.password}
+      </span>
 
       <label className='modal__label'>Name</label>
       <input
@@ -69,10 +74,12 @@ function RegisterModal({ isLoading }) {
         id='name'
         placeholder='Name'
         maxLength='30'
-        value={values.name}
+        value={values.name || ""}
         onChange={handleChange}
       />
-      <span className='modal__error name__error' id='name-error'></span>
+      <span className='modal__error name__error' id='name-error'>
+        {errors.name}
+      </span>
 
       <label className='modal__label'>Avatar URL</label>
       <input
@@ -81,10 +88,12 @@ function RegisterModal({ isLoading }) {
         name='avatar'
         id='avatar'
         placeholder='Avatar URL'
-        value={values.avatar}
+        value={values.avatar || ""}
         onChange={handleChange}
       />
-      <span className='modal__error avatar__error' id='avatar-error'></span>
+      <span className='modal__error avatar__error' id='avatar-error'>
+        {errors.avatar}
+      </span>
     </ModalWithForm>
   );
 }

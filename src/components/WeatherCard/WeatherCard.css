@@ -4,6 +4,8 @@
   align-items: center;
   max-width: 1440px;
   max-height: 80px;
+  padding: 32px, 40px;
+  width: 100%;
   background-repeat: no-repeat;
   background-position: right;
   border-radius: 12px;

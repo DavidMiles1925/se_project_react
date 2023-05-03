@@ -71,7 +71,9 @@ const App = () => {
       .catch((err) => {
         handleModalErrorDisplay(true, errorMessageHandler(err));
       })
-      .finally(setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   function handleLoginSubmit({ email, password }) {
@@ -113,7 +115,9 @@ const App = () => {
       .catch((err) => {
         handleModalErrorDisplay(true, errorMessageHandler(err));
       })
-      .finally(setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   function handleAddItemSubmit({ name, link, weather }) {
@@ -129,7 +133,9 @@ const App = () => {
       .catch((err) => {
         handleModalErrorDisplay(true, errorMessageHandler(err));
       })
-      .finally(setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   function handleLikeCard(id, liked) {
@@ -163,10 +169,12 @@ const App = () => {
           clothingItems.filter((item) => item._id !== selectedCard._id)
         );
         closeModal();
-        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }
 
@@ -216,6 +224,10 @@ const App = () => {
     handleModalErrorDisplay(false, "");
   }
 
+  function handleModalErrorDisplay(value, message) {
+    setErrorDisplay({ value, message });
+  }
+
   function getLocalToken() {
     try {
       const jwt = localStorage.getItem("token");
@@ -249,10 +261,6 @@ const App = () => {
     setAlternateAvatar("");
     setIsLoggedIn(false);
     history.push("/");
-  }
-
-  function handleModalErrorDisplay(value, message) {
-    setErrorDisplay({ value, message });
   }
 
   useEffect(() => {

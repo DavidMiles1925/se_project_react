@@ -7,7 +7,8 @@ import "../ModalWithForm/ModalWithForm.css";
 function LoginModal({ isLoading }) {
   const { setDisableButton, handleLoginSubmit } = useContext(ValidationContext);
 
-  const { values, handleChange, isValid, resetForm } = useFormAndValidation();
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormAndValidation();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -40,10 +41,12 @@ function LoginModal({ isLoading }) {
         required
         minLength='1'
         maxLength='30'
-        value={values.email}
+        value={values.email || ""}
         onChange={handleChange}
       />
-      <span className='modal__error email__error' id='email-error'></span>
+      <span className='modal__error email__error' id='email-error'>
+        {errors.email}
+      </span>
 
       <label className='modal__label'>Password*</label>
       <input
@@ -55,10 +58,12 @@ function LoginModal({ isLoading }) {
         required
         minLength='8'
         maxLength='30'
-        value={values.password}
+        value={values.password || ""}
         onChange={handleChange}
       />
-      <span className='modal__error password__error' id='password-error'></span>
+      <span className='modal__error password__error' id='password-error'>
+        {errors.password}
+      </span>
     </ModalWithForm>
   );
 }

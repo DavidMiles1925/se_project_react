@@ -126,7 +126,7 @@
   cursor: pointer;
 }
 
-.modal__error_visible {
+.modal__error {
   font-size: 12px;
   line-height: 15px;
   color: rgba(255, 0, 0, 1);
