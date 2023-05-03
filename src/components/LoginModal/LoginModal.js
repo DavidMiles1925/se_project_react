@@ -1,41 +1,26 @@
-import { useState, useEffect, useContext } from "react";
-import {
-  ValidationContext,
-  checkInputValidity,
-} from "../../contexts/ValidationContext";
+import { useEffect, useContext } from "react";
+import { ValidationContext } from "../../contexts/ValidationContext";
+import { useFormAndValidation } from "../../utils/useFormAndValidation";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import "../ModalWithForm/ModalWithForm.css";
 
 function LoginModal({ isLoading }) {
   const { setDisableButton, handleLoginSubmit } = useContext(ValidationContext);
 
-  const [emailState, setEmailState] = useState({ valid: false, value: "" });
-  const [passwordState, setPasswordState] = useState({
-    valid: false,
-    value: "",
-  });
-
-  useEffect(() => {
-    setDisableButton(!(emailState.valid && passwordState.valid));
-  }, [emailState, passwordState, setDisableButton]);
-
-  useEffect(() => {
-    setEmailState({ valid: false, value: "" });
-    setPasswordState({ valid: false, value: "" });
-  }, []);
-
-  function handleEmailChange(e) {
-    setEmailState({ valid: checkInputValidity(e), value: e.target.value });
-  }
-
-  function handlePasswordChange(e) {
-    setPasswordState({ valid: checkInputValidity(e), value: e.target.value });
-  }
+  const { values, handleChange, isValid, resetForm } = useFormAndValidation();
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleLoginSubmit(emailState.value, passwordState.value);
+    handleLoginSubmit(values);
   }
+
+  useEffect(() => {
+    resetForm();
+  }, [resetForm]);
+
+  useEffect(() => {
+    setDisableButton(!isValid);
+  }, [values, isValid, setDisableButton]);
 
   return (
     <ModalWithForm
@@ -55,8 +40,8 @@ function LoginModal({ isLoading }) {
         required
         minLength='1'
         maxLength='30'
-        value={emailState.value}
-        onChange={handleEmailChange}
+        value={values.email}
+        onChange={handleChange}
       />
       <span className='modal__error email__error' id='email-error'></span>
 
@@ -70,8 +55,8 @@ function LoginModal({ isLoading }) {
         required
         minLength='8'
         maxLength='30'
-        value={passwordState.value}
-        onChange={handlePasswordChange}
+        value={values.password}
+        onChange={handleChange}
       />
       <span className='modal__error password__error' id='password-error'></span>
     </ModalWithForm>

@@ -1,52 +1,26 @@
-import { useState, useEffect, useContext } from "react";
-import {
-  ValidationContext,
-  checkInputValidity,
-} from "../../contexts/ValidationContext";
+import { useEffect, useContext } from "react";
+import { ValidationContext } from "../../contexts/ValidationContext";
+import { useFormAndValidation } from "../../utils/useFormAndValidation";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
 function AddItemModal({ isLoading }) {
   const { setDisableButton, handleAddItemSubmit } =
     useContext(ValidationContext);
-  const [nameState, setNameState] = useState({
-    valid: false,
-    value: "",
-  });
-  const [linkState, setLinkState] = useState({
-    valid: false,
-    value: "",
-  });
-  const [weatherState, setWeatherState] = useState("");
 
-  function handleNameChange(e) {
-    setNameState({ valid: checkInputValidity(e), value: e.target.value });
-  }
-
-  function handleLinkChange(e) {
-    setLinkState({
-      valid: checkInputValidity(e),
-      value: e.target.value,
-    });
-  }
-
-  function handleWeatherChange(e) {
-    setWeatherState(e.target.value);
-  }
+  const { values, handleChange, isValid, resetForm } = useFormAndValidation();
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleAddItemSubmit(nameState.value, linkState.value, weatherState);
+    handleAddItemSubmit(values);
   }
 
   useEffect(() => {
-    setDisableButton(!(nameState.valid && linkState.valid && weatherState));
-  }, [nameState, linkState, weatherState, setDisableButton]);
+    resetForm();
+  }, []);
 
   useEffect(() => {
-    setNameState({ valid: false, value: "" });
-    setLinkState({ valid: false, value: "" });
-    setWeatherState();
-  }, []);
+    setDisableButton(!isValid);
+  }, [values, isValid, setDisableButton]);
 
   return (
     <ModalWithForm
@@ -66,8 +40,8 @@ function AddItemModal({ isLoading }) {
         required
         minLength='1'
         maxLength='30'
-        value={nameState.value}
-        onChange={handleNameChange}
+        value={values.name}
+        onChange={handleChange}
       />
       <span className='modal__error name__error' id='name-error'></span>
       <label className='modal__label'>Link</label>
@@ -77,9 +51,9 @@ function AddItemModal({ isLoading }) {
         name='link'
         id='link'
         placeholder='URL'
-        value={linkState.value}
+        value={values.link}
         required
-        onChange={handleLinkChange}
+        onChange={handleChange}
       />
       <span className='modal__error link__error' id='link_error'></span>
       <label className='modal__label'>Select the weather type</label>
@@ -91,7 +65,7 @@ function AddItemModal({ isLoading }) {
             name='weatherType'
             id='choiceHot'
             value='hot'
-            onChange={handleWeatherChange}
+            onChange={handleChange}
           />
           Hot
         </label>
@@ -104,7 +78,7 @@ function AddItemModal({ isLoading }) {
             name='weatherType'
             id='choiceWarm'
             value='warm'
-            onChange={handleWeatherChange}
+            onChange={handleChange}
           />
           Warm
         </label>
@@ -117,7 +91,7 @@ function AddItemModal({ isLoading }) {
             name='weatherType'
             id='choiceCold'
             value='cold'
-            onChange={handleWeatherChange}
+            onChange={handleChange}
           />
           Cold
         </label>

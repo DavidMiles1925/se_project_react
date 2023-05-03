@@ -1,9 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import {
-  ValidationContext,
-  checkInputValidity,
-} from "../../contexts/ValidationContext";
+import { ValidationContext } from "../../contexts/ValidationContext";
+import { useFormAndValidation } from "../../utils/useFormAndValidation";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import "../ModalWithForm/ModalWithForm.css";
 
@@ -12,31 +10,20 @@ function EditProfileModal({ isLoading }) {
   const { setDisableButton, handleUpdateSubmit } =
     useContext(ValidationContext);
 
-  const [nameState, setNameState] = useState({
-    valid: true,
-    value: currentUser.name,
-  });
-  const [avatarState, setAvatarState] = useState({
-    valid: true,
-    value: currentUser.avatar,
-  });
-
-  function handleNameChange(e) {
-    setNameState({ valid: checkInputValidity(e), value: e.target.value });
-  }
-
-  function handleAvatarChange(e) {
-    setAvatarState({ valid: checkInputValidity(e), value: e.target.value });
-  }
+  const { values, handleChange, isValid, setValues } = useFormAndValidation();
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleUpdateSubmit(nameState.value, avatarState.value);
+    handleUpdateSubmit(values);
   }
 
   useEffect(() => {
-    setDisableButton(!(nameState.valid && avatarState.valid));
-  }, [nameState, avatarState, setDisableButton]);
+    setValues(currentUser);
+  }, [currentUser, setValues]);
+
+  useEffect(() => {
+    setDisableButton(!isValid);
+  }, [values, isValid, setDisableButton]);
 
   return (
     <ModalWithForm
@@ -56,8 +43,8 @@ function EditProfileModal({ isLoading }) {
         required
         minLength='1'
         maxLength='30'
-        value={nameState.value}
-        onChange={handleNameChange}
+        value={values.name}
+        onChange={handleChange}
       />
       <span className='modal__error name__error' id='name-error'></span>
 
@@ -69,8 +56,8 @@ function EditProfileModal({ isLoading }) {
         id='avatar'
         placeholder='Avatar URL'
         required
-        value={avatarState.value}
-        onChange={handleAvatarChange}
+        value={values.avatar}
+        onChange={handleChange}
       />
       <span className='modal__error avatar__error' id='avatar-error'></span>
     </ModalWithForm>

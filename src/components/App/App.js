@@ -58,24 +58,23 @@ const App = () => {
     setDisableButton(!disableButton);
   }
 
-  function handleSignupSubmit(email, password, name, avatar) {
+  function handleSignupSubmit(values) {
     setIsLoading(true);
 
-    const user = { email, password, name, avatar };
+    const { email, password } = values;
 
-    signup(user)
+    signup(values)
       .then((res) => {
-        handleLoginSubmit(email, password);
+        handleLoginSubmit({ email, password });
         closeModal();
-        setIsLoading(false);
       })
       .catch((err) => {
         handleModalErrorDisplay(true, errorMessageHandler(err));
-        setIsLoading(false);
-      });
+      })
+      .finally(setIsLoading(false));
   }
 
-  function handleLoginSubmit(email, password) {
+  function handleLoginSubmit({ email, password }) {
     setIsLoading(true);
 
     const user = { email, password };
@@ -99,7 +98,7 @@ const App = () => {
       });
   }
 
-  function handleUpdateSubmit(name, avatar) {
+  function handleUpdateSubmit({ name, avatar }) {
     setIsLoading(true);
 
     const token = localStorage.getItem("token");
@@ -117,7 +116,7 @@ const App = () => {
       });
   }
 
-  function handleAddItemSubmit(name, link, weather) {
+  function handleAddItemSubmit({ name, link, weather }) {
     setIsLoading(true);
 
     const _id = clothingItems.length + 1;
@@ -210,8 +209,7 @@ const App = () => {
       evt.target.classList.contains("modal__close") ||
       evt.target.classList.contains("modal__cancel")
     ) {
-      setActiveModal();
-      handleModalErrorDisplay(false, "");
+      closeModal();
     }
   }
 

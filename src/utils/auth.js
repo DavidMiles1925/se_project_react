@@ -1,15 +1,6 @@
+import { request } from "./api.js";
+
 const baseUrl = "http://localhost:3001";
-
-const processServerResponse = (res) => {
-  if (res.ok) {
-    return res.json();
-  }
-  return Promise.reject(`Error: ${res.status}`);
-};
-
-function request(url, options) {
-  return fetch(url, options).then(processServerResponse);
-}
 
 function signup(data) {
   const { name, avatar, email, password } = data;

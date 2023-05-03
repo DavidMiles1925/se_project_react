@@ -1,8 +1,6 @@
-import { useState, useEffect, useContext } from "react";
-import {
-  ValidationContext,
-  checkInputValidity,
-} from "../../contexts/ValidationContext";
+import { useEffect, useContext } from "react";
+import { ValidationContext } from "../../contexts/ValidationContext";
+import { useFormAndValidation } from "../../utils/useFormAndValidation";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import "../ModalWithForm/ModalWithForm.css";
 
@@ -10,50 +8,20 @@ function RegisterModal({ isLoading }) {
   const { setDisableButton, handleSignupSubmit } =
     useContext(ValidationContext);
 
-  const [emailState, setEmailState] = useState({ valid: false, value: "" });
-  const [passwordState, setPasswordState] = useState({
-    valid: false,
-    value: "",
-  });
-  const [nameState, setNameState] = useState({ valid: false, value: "" });
-  const [avatarState, setAvatarState] = useState({ valid: false, value: "" });
-
-  useEffect(() => {
-    setDisableButton(!(emailState.valid && passwordState.valid));
-  }, [emailState, passwordState, setDisableButton]);
-
-  useEffect(() => {
-    setEmailState({ valid: false, value: "" });
-    setPasswordState({ valid: false, value: "" });
-    setNameState({ valid: false, value: "" });
-    setAvatarState({ valid: false, value: "" });
-  }, []);
-
-  function handleEmailChange(e) {
-    setEmailState({ valid: checkInputValidity(e), value: e.target.value });
-  }
-
-  function handlePasswordChange(e) {
-    setPasswordState({ valid: checkInputValidity(e), value: e.target.value });
-  }
-
-  function handleNameChange(e) {
-    setNameState({ valid: checkInputValidity(e), value: e.target.value });
-  }
-
-  function handleAvatarChange(e) {
-    setAvatarState({ valid: checkInputValidity(e), value: e.target.value });
-  }
+  const { values, handleChange, isValid, resetForm } = useFormAndValidation();
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleSignupSubmit(
-      emailState.value,
-      passwordState.value,
-      nameState.value,
-      avatarState.value
-    );
+    handleSignupSubmit(values);
   }
+
+  useEffect(() => {
+    resetForm();
+  }, [resetForm]);
+
+  useEffect(() => {
+    setDisableButton(!isValid);
+  }, [values, isValid, setDisableButton]);
 
   return (
     <ModalWithForm
@@ -73,8 +41,8 @@ function RegisterModal({ isLoading }) {
         required
         minLength='1'
         maxLength='30'
-        value={emailState.value}
-        onChange={handleEmailChange}
+        value={values.email}
+        onChange={handleChange}
       />
       <span className='modal__error email__error' id='email-error'></span>
 
@@ -88,8 +56,8 @@ function RegisterModal({ isLoading }) {
         required
         minLength='8'
         maxLength='30'
-        value={passwordState.value}
-        onChange={handlePasswordChange}
+        value={values.password}
+        onChange={handleChange}
       />
       <span className='modal__error password__error' id='password-error'></span>
 
@@ -101,8 +69,8 @@ function RegisterModal({ isLoading }) {
         id='name'
         placeholder='Name'
         maxLength='30'
-        value={nameState.value}
-        onChange={handleNameChange}
+        value={values.name}
+        onChange={handleChange}
       />
       <span className='modal__error name__error' id='name-error'></span>
 
@@ -113,8 +81,8 @@ function RegisterModal({ isLoading }) {
         name='avatar'
         id='avatar'
         placeholder='Avatar URL'
-        value={avatarState.value}
-        onChange={handleAvatarChange}
+        value={values.avatar}
+        onChange={handleChange}
       />
       <span className='modal__error avatar__error' id='avatar-error'></span>
     </ModalWithForm>

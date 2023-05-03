@@ -65,4 +65,4 @@ function unlikeCard(id, token) {
   });
 }
 
-export { getCards, addCard, deleteCard, likeCard, unlikeCard };
+export { request, getCards, addCard, deleteCard, likeCard, unlikeCard };
