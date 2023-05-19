@@ -185,10 +185,12 @@ const App = () => {
   }
 
   function handleSignup() {
+    handleModalErrorDisplay(false, "");
     setActiveModal("signup");
   }
 
   function handleSignin() {
+    handleModalErrorDisplay(false, "");
     setActiveModal("signin");
   }
 
