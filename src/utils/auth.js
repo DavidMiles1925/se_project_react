@@ -1,6 +1,9 @@
 import { request } from "./api.js";
 
-const baseUrl = "http://localhost:3001";
+const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? "api.dmwtwr.crabdance.com"
+    : "http://localhost:3000";
 
 function signup(data) {
   const { name, avatar, email, password } = data;
