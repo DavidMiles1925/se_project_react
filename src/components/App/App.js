@@ -271,7 +271,7 @@ const App = () => {
         setClothingItems(items);
       })
       .catch((err) => {
-        console.log(JSON.parse(err));
+        console.log("error occured");
       });
   }, [isLoggedIn]);
 

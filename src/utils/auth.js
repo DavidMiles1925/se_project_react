@@ -2,7 +2,7 @@ import { request } from "./api.js";
 
 const baseUrl =
   process.env.NODE_ENV === "production"
-    ? "api.dmwtwr.crabdance.com"
+    ? "//api.dmwtwr.crabdance.com"
     : "http://localhost:3000";
 
 function signup(data) {

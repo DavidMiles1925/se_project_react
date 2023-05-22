@@ -16,7 +16,7 @@ function errorMessageHandler(err) {
   } else if (err.name === "TypeError") {
     return "Could not connect to server.";
   } else {
-    return "Something went wrong.";
+    return `Something went wrong. ${err}`;
   }
 }
 
