@@ -2,12 +2,13 @@
 const baseUrl =
   process.env.NODE_ENV === "production"
     ? "//api.dmwtwr.crabdance.com"
-    : "http://localhost:3000";
+    : "http://localhost:3001";
 
 const processServerResponse = (res) => {
   if (res.ok) {
     return res.json();
   }
+  console.log(res);
   return Promise.reject(`Error: ${res.status}`);
 };
 
